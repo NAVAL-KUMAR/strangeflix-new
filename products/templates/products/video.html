@@ -1,7 +1,7 @@
 {% extends "products/parent.html" %}
 
 {% block title %}
-Video -
+Video 
 {% endblock %}
 
 {% block body %}
@@ -48,6 +48,7 @@ Video -
             <p style="margin-top: 7px;margin-left: 15px; ">Description  : {{ video.description }}</p>
 
         </div>
+        
 
          <div class="row " style="margin-left: 5px;margin-right: 5px; ">
             <div class="col-md-3 mx-auto">
@@ -80,6 +81,24 @@ Video -
             </div>
         </div>
         <br>
+         {% if user.is_staff%}
+        <div class="row" >
+           <div class="container" >
+           
+          <label for="tg1"><b>Tag of video: </b></label>
+          <input placeholder="add tag" id="tg1" style="width: 400px"  type="text" name="tag_info">
+          <input value="add tag" type="submit" style="width: 100px" name="tag_submit">
+
+        
+         <select>
+             
+             <option disabled selected>all added tags</option>
+         </select>
+           </div>
+
+        </div>
+        <br>
+        {% endif %}
 
 
   <div class="row">

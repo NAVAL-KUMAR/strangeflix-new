@@ -13,6 +13,7 @@ urlpatterns = [
     path('favourite_video', FavouriteVideo.as_view()),
     path('history_video', HistoryVideo.as_view()),
     path('video/<int:id>', VideoView.as_view()),
+    
     path('comment',views.comment),
     path('comment_list',views.comment_list),
     path('liked', views.liked),

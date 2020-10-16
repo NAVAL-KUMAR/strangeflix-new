@@ -118,16 +118,7 @@ var theVideo = document.getElementById("my_video");
               vid_currentTime = theVideo.currentTime;
               theVideo.currentTime = vid_currentTime + 10;
             break;
-         case 32:
-            event.preventDefault();
-            if(vid.paused){
-                vid.play();
-                document.getElementById('playpausebtn').className='fa fa-play';
-            }else{
-                vid.pause();
-                document.getElementById('playpausebtn').className='fa fa-pause';
-            }
-            break;
+         
 
       }
   };
