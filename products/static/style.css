@@ -1,0 +1,107 @@
+span#curtimetext{
+    color:white;
+    opacity:1;
+}
+span#durtimetext{
+    color:white;
+    opacity:1;
+}
+
+
+svg#backward10{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+svg#backward10:hover{
+    opacity:1;
+}
+
+i#next{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#next:hover{
+    opacity:1;
+}
+
+i#previous{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#previous:hover{
+    opacity:1;
+}
+
+svg#forward10{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+svg#forward10:hover{
+    opacity:1;
+}
+
+i#fullscreenbtn{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#fullscreenbtn:hover{
+    opacity:1;
+}
+
+
+i#mutebtn{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#mutebtn:hover{
+    opacity:1;
+}
+
+
+
+i#playpausebtn{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#playpausebtn:hover{
+    opacity:1;
+}
+
+div#video_control_bar{
+top: -80px;
+position: relative;
+opacity:0;
+}
+div#video_control_bar:hover{
+    top: -80px;
+    position: relative;
+    opacity:1;
+}
