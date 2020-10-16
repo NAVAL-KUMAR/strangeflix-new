@@ -84,16 +84,23 @@ Video
          {% if user.is_staff%}
         <div class="row" >
            <div class="container" >
-           
+           <form  action="{%url 'add_tag' %}" method="POST">
+            {% csrf_token %}
           <label for="tg1"><b>Tag of video: </b></label>
           <input placeholder="add tag" id="tg1" style="width: 400px"  type="text" name="tag_info">
+          <input type='hidden' name="video_id" value="{{ video.id }}">
           <input value="add tag" type="submit" style="width: 100px" name="tag_submit">
-
-        
-         <select>
+          <select>
              
              <option disabled selected>all added tags</option>
+
+             {%for tag in tag%}
+              <option>{{tag.title}}</option>
+             {% endfor %}
          </select>
+           </form>
+        
+         
            </div>
 
         </div>

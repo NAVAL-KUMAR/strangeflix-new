@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite , History
+from .models import Video, Comment, Like, Favourite , History,Tag
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -169,6 +169,8 @@ class VideoView(View):
         most_recent_videos = Video.objects.order_by('-upload_date')[:8]
         context['most_recent_videos'] = most_recent_videos
         video = Video.objects.get(id=id)
+        tag=Tag.objects.filter(video=id)
+        context['tag']=tag
         try:
             go = Like.objects.get(video_id=id, user=request.user)
         except ObjectDoesNotExist:
@@ -308,3 +310,26 @@ def new_video(request):
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
 
     return render(request,'products/new_video.html')
+
+def add_tag(request):
+    if request.method=='POST':
+        video_id=request.POST.get('video_id',False)
+        video=Video.objects.get(id=video_id)
+        tag=Tag()
+        tag.title=request.POST.get('tag_info')
+        tag.video=video
+        tag.save()
+        return HttpResponseRedirect('video/{}'.format(str(video.id)))
+    else:
+        return HttpResponseRedirect('video/{}'.format(str(video.id)))
+
+    
+    
+    
+    
+    
+    
+
+
+
+
