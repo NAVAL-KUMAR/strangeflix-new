@@ -15,6 +15,8 @@ urlpatterns = [
     path('video/<int:id>', VideoView.as_view()),
     path('add_tag',views.add_tag,name='add_tag'),
     path('comment',views.comment),
+    path('flag',views.flag,name='flag'),
+    path('notification',views.notification,name='notification'),
     path('comment_list',views.comment_list),
     path('liked', views.liked),
     path('disliked', views.disliked),

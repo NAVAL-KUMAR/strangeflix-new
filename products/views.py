@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite , History,Tag
+from .models import Video, Comment, Like, Favourite , History,Tag,Flag
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -321,7 +321,26 @@ def add_tag(request):
         tag.save()
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
     else:
+        return render(request,'products/index.html')
+
+def flag(request):
+    if request.method=='POST':
+        videoid=request.POST.get('videoid')
+        video=Video.objects.get(id=videoid)
+        flag=Flag()
+        flag.video=video
+        flag.user=request.user
+        flag.reason=request.POST.get('reason_detail')
+        flag.user_response=False
+        flag.save()
+        messages.add_message(request,messages.SUCCESS,'repoted successfully')
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
+    else:
+        return render(request,'products/index.html')
+
+def notification(request):
+    items=Flag.objects.all().order_by('-date')
+    return render(request,'products/notification.html',{'items':items})
 
     
     
