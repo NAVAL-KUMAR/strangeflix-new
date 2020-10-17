@@ -1,0 +1,21 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+notification
+{% endblock %}
+
+{% block body %}
+
+{% for notf in items%}
+<P>{{notf.reason}}</P>
+{{notf.video}}
+{{notf.user.first_name}}
+
+<h4>{{notf.date}}</h4>
+
+<br>
+<br><br>
+
+{% endfor%}
+
+{% endblock%}
