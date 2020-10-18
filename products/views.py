@@ -116,6 +116,7 @@ def login(request):
         return render(request, 'products/login.html')
 
 
+
 def logout(request):
     if request.method == 'POST':
         auth.logout(request)
@@ -164,7 +165,7 @@ class VideoView(View):
 
         context = {'video': video_by_id}
 
-        comments = Comment.objects.filter(video__id=id).order_by('-datetime')[:5]
+        comments = Comment.objects.filter(video__id=id).order_by('-datetime')
         context['comments'] = comments
         most_recent_videos = Video.objects.order_by('-upload_date')[:8]
         context['most_recent_videos'] = most_recent_videos
@@ -206,8 +207,34 @@ def comment(request):
         video = Video.objects.get(id = video_id)
         new_comment = Comment(text = comment_text, user = request.user , video = video)
         new_comment.save()
-        comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')[:5]
+        comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
         return JsonResponse({'comments': list(comments.values())})
+
+def delete_comment(request):
+    if request.method == 'GET':
+        comment_id = request.GET.get('comment_id',False)
+        video_id = request.GET.get('video_id', False)
+        print(video_id)
+        print(comment_id)
+        Comment.objects.filter(pk = comment_id).delete();
+        comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
+        return JsonResponse({'comments': list(comments.values())})
+
+def edit_comment(request):
+    if request.method == 'GET':
+        comment_id = request.GET.get('comment_id',False)
+        video_id = request.GET.get('video_id', False)
+        text = request.GET.get('text', False)
+        print(video_id)
+        print(comment_id)
+        print(text)
+        comment = Comment.objects.get(pk = comment_id)
+        comment.text = text
+        comment.save()
+        comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
+        return JsonResponse({'comments': list(comments.values())})
+
+
 
 
 def liked(request):
@@ -308,3 +335,4 @@ def new_video(request):
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
 
     return render(request,'products/new_video.html')
+

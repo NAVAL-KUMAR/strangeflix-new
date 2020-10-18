@@ -14,6 +14,8 @@ urlpatterns = [
     path('history_video', HistoryVideo.as_view()),
     path('video/<int:id>', VideoView.as_view()),
     path('comment',views.comment),
+    path('delete_comment',views.delete_comment),
+    path('edit_comment',views.edit_comment),
     path('comment_list',views.comment_list),
     path('liked', views.liked),
     path('disliked', views.disliked),

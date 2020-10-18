@@ -1,6 +1,7 @@
-var vid, playbtn ,volumeslider, mutebtn, curtimetext, durtimetext, seekslider , videoPlayerBox , fullScreenBtn , backward10 , forward10;
+var vid, playbtn ,volumeslider, mutebtn, curtimetext, durtimetext, seekslider , videoPlayerBox , fullScreenBtn , backward10 , forward10 , playback2 ,playback1_5,playback1,playback0_5,playback0_25;
 
 function initializeplayer(){
+
     event.preventDefault();
     vid = document.getElementById('my_video');
     playbtn = document.getElementById('playpausebtn');
@@ -13,16 +14,26 @@ function initializeplayer(){
     durtimetext = document.getElementById('durtimetext');
     mutebtn = document.getElementById('mutebtn');
     volumeslider = document.getElementById('volumeslider');
+    playback2 = document.getElementById('playback2.0');
+    playback1_5 = document.getElementById('playback1.5');
+    playback1 = document.getElementById('playback1.0');
+    playback0_5 = document.getElementById('playback0.5');
+    playback0_25 = document.getElementById('playback0.25');
 
     playbtn.addEventListener("click",playPause,false);
     forward10.addEventListener("click",forward10sec,false);
     backward10.addEventListener("click",backward10sec,false);
     fullScreenBtn.addEventListener("click",fullScreen,false);
+    playback2.addEventListener("click",playback2speed,false);
+    playback1_5.addEventListener("click",playback1_5speed,false);
+    playback1.addEventListener("click",playback1speed,false);
+    playback0_5.addEventListener("click",playback0_5speed,false);
+    playback0_25.addEventListener("click",playback0_25speed,false);
     seekslider.addEventListener("change",vidSeek,false);
     vid.addEventListener("timeupdate",seektimeupdate,false);
     mutebtn.addEventListener("click",vidmute,false);
     volumeslider.addEventListener("change",setvolume,false);
-    videoPlayerBox.addEventListener("mouseover",makevisible,false);
+    document.getElementById("video_control").addEventListener("mouseover",makevisible,false);
 }
 
 window.onload = initializeplayer;
@@ -78,8 +89,8 @@ function seektimeupdate(){
     if(durmins < 10) durmins = "0"+durmins;
     if(dursecs < 10) dursecs = "0"+dursecs;
 
-    curtimetext.innerHTML = curmins+":"+cursecs+"/";
-    durtimetext.innerHTML = durmins+":"+dursecs;
+    curtimetext.innerHTML = curmins+":"+cursecs+" ";
+    durtimetext.innerHTML = " "+ durmins+":"+dursecs;
 }
 
 function vidmute(){
@@ -98,6 +109,24 @@ function setvolume(){
     vid.volume = volumeslider.value/100;
 }
 
-function makevisible(){
-    document.getElementById("video_control_bar").hide();
+
+function playback2speed(){
+    vid.playbackRate = 2.0;
 }
+
+function playback1_5speed(){
+    vid.playbackRate = 1.5;
+}
+
+function playback1speed(){
+    vid.playbackRate = 1.0;
+}
+
+function playback0_5speed(){
+    vid.playbackRate = 0.5;
+}
+
+function playback0_25speed(){
+    vid.playbackRate = 0.25;
+}
+

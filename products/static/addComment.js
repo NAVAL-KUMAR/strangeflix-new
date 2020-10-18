@@ -1,3 +1,5 @@
+const user_id = JSON.parse(document.getElementById('user_id').textContent);
+
 jQuery(document).ready(function () {
   $("#form_comment").submit(function (event) {
     event.preventDefault();
@@ -13,7 +15,16 @@ jQuery(document).ready(function () {
       console.log(response);
         $('#commment_list').empty();
         for(var key in response.comments){
-            var temp = "<tr><td>"+response.comments[key].user+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td></tr>";
+            var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
+            //{% if user.is_authenticated and user == comment.user %}
+            console.log(response.comments);
+            if(user_id == response.comments[key].user_id){
+            temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+            temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+            //{% endif %}
+            }
+
+            temp = temp + '</tr>';
 
             $('#commment_list').append(temp);
            // console.log($('#comment_list'));
@@ -102,32 +113,115 @@ jQuery(document).ready(function () {
 
 var theVideo = document.getElementById("my_video");
 
-  document.onkeydown = function(event) {
-        console.log(event.keyCode);
-      switch (event.keyCode) {
-         case 37:
-              event.preventDefault();
+//  document.onkeydown = function(event) {
+//        console.log(event.keyCode);
+//      switch (event.keyCode) {
+//         case 37:
+//              event.preventDefault();
+//
+//              vid_currentTime = theVideo.currentTime;
+//              theVideo.currentTime = vid_currentTime - 10;
+//            break;
+//
+//         case 39:
+//              event.preventDefault();
+//
+//              vid_currentTime = theVideo.currentTime;
+//              theVideo.currentTime = vid_currentTime + 10;
+//            break;
+//         case 32:
+//            event.preventDefault();
+//            if(vid.paused){
+//                vid.play();
+//                document.getElementById('playpausebtn').className='fa fa-play';
+//            }else{
+//                vid.pause();
+//                document.getElementById('playpausebtn').className='fa fa-pause';
+//            }
+//            break;
+//
+//      }
+//  };
 
-              vid_currentTime = theVideo.currentTime;
-              theVideo.currentTime = vid_currentTime - 10;
-            break;
+  function delete_comment(id){
+            $.ajax({
+              type: "GET",
+              url: "/delete_comment",
+              data: {
+                    video_id : $('#video_id').val(),
+                    comment_id : parseInt(id.id.substring(1))
+              },
+              success: function (response) {
+                console.log(response);
+                $('#commment_list').empty();
+                for(var key in response.comments){
+                    var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
 
-         case 39:
-              event.preventDefault();
+                    console.log(response.comments);
+                    if(user_id == response.comments[key].user_id){
 
-              vid_currentTime = theVideo.currentTime;
-              theVideo.currentTime = vid_currentTime + 10;
-            break;
-         case 32:
-            event.preventDefault();
-            if(vid.paused){
-                vid.play();
-                document.getElementById('playpausebtn').className='fa fa-play';
-            }else{
-                vid.pause();
-                document.getElementById('playpausebtn').className='fa fa-pause';
+                     temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+
+                    }
+
+                    temp = temp + '</tr>';
+
+                    $('#commment_list').append(temp);
+                   // console.log($('#comment_list'));
+                }
             }
-            break;
+            });
+  }
 
-      }
-  };
+
+ function openForm(id) {
+        document.getElementById("popupForm").style.display = "block";
+
+
+        $(document).ready(function () {
+            $("#edit").click(function () {
+                var txt = $("#editcomment").val();
+
+                $.ajax({
+              type: "GET",
+              url: "/edit_comment",
+              data: {
+                    video_id : $('#video_id').val(),
+                    comment_id : parseInt(id.id.substring(1)),
+                    text : txt
+              },
+              success: function (response) {
+                console.log(response);
+                $('#commment_list').empty();
+                for(var key in response.comments){
+                    var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
+                    //{% if user.is_authenticated and user == comment.user %}
+                    console.log(response.comments);
+                    if(user_id == response.comments[key].user_id){
+                     temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+            //{% endif %}
+               //{% endif %}
+                    }
+
+                    temp = temp + '</tr>';
+
+                    $('#commment_list').append(temp);
+                   // console.log($('#comment_list'));
+                }
+                document.getElementById("popupForm").style.display = "none";
+            }
+            });
+            return false;
+            });
+        });
+
+  }
+
+    function closeForm() {
+    document.getElementById("popupForm").style.display = "none";
+
+$( window ).unload(function() {
+  return "Bye now!";
+});
