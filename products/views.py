@@ -24,6 +24,7 @@ import threading
 from django.core.exceptions import ObjectDoesNotExist
 
 
+
 def home(request):
     return render(request, 'products/home.html');
 
@@ -332,6 +333,8 @@ def flag(request):
         flag.user=request.user
         flag.reason=request.POST.get('reason_detail')
         flag.user_response=False
+        flag.date=timezone.datetime.now()
+        flag.name=request.user.first_name
         flag.save()
         messages.add_message(request,messages.SUCCESS,'repoted successfully')
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
@@ -341,6 +344,44 @@ def flag(request):
 def notification(request):
     items=Flag.objects.all().order_by('-date')
     return render(request,'products/notification.html',{'items':items})
+
+def delete_video(request):
+    if request.method=='POST':
+        id=request.POST.get('idvideo')
+        video_to_delete=Video.objects.get(id=id)
+        video_to_delete.filename.delete()
+        video_to_delete.delete()
+        messages.success(request,'video deleated successfully')
+        return redirect('notification')
+
+   
+    
+def ignore_goto_video(request):
+    if request.method=='GET':
+        id=request.GET.get('notification_v_id',False)
+        flag=Flag.objects.get(id=id)
+
+        flag.user_response=True
+        flag.save()
+        print(flag.reason)
+        print('hello world')
+        redirect='video/{}'.format(str(flag.video.id))
+
+        return JsonResponse({'id':flag.video.id,'redirect':redirect})  
+    
+    
+
+def ignore_v(request):
+    if request.method=='GET':
+        id=request.GET.get('notification_v_id',False)
+        flag=Flag.objects.get(id=id)
+        flag.user_response=True
+        flag.save()
+        flgs=Flag.objects.all().order_by('-date')
+        flg=list(flgs.values())
+        return JsonResponse({'flg': flg})
+
+
 
     
     

@@ -69,8 +69,9 @@ class Flag(models.Model):
     video=models.ForeignKey(Video,on_delete=models.CASCADE)
     user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
     reason=models.TextField(max_length=100)
-    date=models.DateTimeField(auto_now=True,blank=False,null=False)
+    date=models.DateTimeField()
     user_response=models.BooleanField()
+    name=models.CharField(max_length=50)
 
     def __str__(self):
         return str(self.user)+str('/')+str(self.video)

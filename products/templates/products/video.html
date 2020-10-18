@@ -38,6 +38,15 @@ Video
                 </div>
             </div>
         </div>
+        {% if user.is_staff%}
+        <form method="POST" action="/delete_video">
+          {% csrf_token %}
+          <input type="hidden" name="idvideo" value="{{video.id}}">
+          
+ <button type="submit" style="cursor: pointer; background-color: rgb(200,0,137);width: 100%;">Deleat</button>
+
+ </form>
+ {% endif %}
 
         <div class="row" >
 
@@ -50,38 +59,40 @@ Video
         </div>
         
          
-         <div class="row" style="margin-left: 5px;margin-right: 5px;  ">
-            <div class="col-md-3 mx-auto">
+         <div class="row" style="margin-left: 5px;margin-right: 5px; ">
+
+           
             <i class="fa fa-thumbs-up" id = "liked"
                {% if like_dislike.like == 1 %}
                     style="font-size:30px;color:blue;"
                {% endif %}
                     style="font-size:30px;color:grey;"> </i>
 
-            </div>
+          
 
-            <div class="col-md-3 " style="align:center;">
+            
             <i class="fa fa-thumbs-down" id = "disliked"
                {% if like_dislike.like == -1 %}
-                    style="font-size:30px;color:red;"
+                    style="font-size:30px;color:red;margin-left: 90px;"
                {% endif %}
-                    style="font-size:30px;color:grey;"> </i>
-            </div>
+                    style="font-size:30px;color:grey;margin-left: 90px;"> </i>
+           
 
-            <div class="col-md-3 mx-auto">
+            
             <i class="fa fa-heart" id = "favourite"
                {% if fav.favourite %}
-                    style="cursor: pointer; font-size:30px;color:red;"
+                    style="cursor: pointer; font-size:30px;color:red;margin-left: 90px;"
                {% endif %}
-                    style="cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
-            </div>
+                    style="cursor: pointer; font-size:30px;color:black;margin-left: 90px;" aria-hidden="true"></i>
+         
 
              
-            <div class="col-md-3 mx-auto">
-            <i id="btn_flag" class="fa fa-flag" style="cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
+            
+            <i id="btn_flag" class="fa fa-flag" style="margin-left: 90px;cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
             
 
-            </div>
+            
+
 
         </div>
        
