@@ -1,0 +1,48 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+notification
+{% endblock %}
+
+{% block body %}
+<br>
+
+<div id="notf">
+{% for notf in items%}
+
+ <div {%if notf.user_response%}
+style="background-color: rgba(18,90,87,0.5);margin-left: 5px;margin-right: 5px; padding: 5px 8px;"
+{%endif%}
+style="background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px;padding: 5px 8px;"
+ >
+
+<P>{{notf.user.first_name}}
+
+
+	<button id="c{{notf.id}}" onclick="ignore_goto_video(this)" style="cursor: pointer;" >Go to Video</button>
+	<button  id="{{notf.id}}" onclick="ignore_v(this)" style="margin-left: 5px;">Ignore</button>
+
+<span style="float: right;">{{notf.date}}</span></P>
+
+
+
+
+
+<h4>{{notf.reason}}</h4>
+
+
+
+
+</div>
+
+<div style="background-color: white;height: 10px;"></div>
+
+{% endfor%}
+</div>
+
+{% load static %}
+<script src="{% static 'addComment.js' %}" type="text/javascript"></script>
+
+
+
+{% endblock%}

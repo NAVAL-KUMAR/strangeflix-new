@@ -42,10 +42,25 @@ class Favourite(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
 
 class History(models.Model):
-    pause_time  = models.IntegerField(default=0)
+    pause_time  =  models.FloatField(default=0)
     dateTime = models.DateTimeField(auto_now=True, blank=False, null=False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
 
+class Tag(models.Model):
+    title=models.CharField(max_length=25)
+    video=models.ForeignKey(Video,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title+str("/")+str(self.video)
 
+class Flag(models.Model):
+    video=models.ForeignKey(Video,on_delete=models.CASCADE)
+    user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    reason=models.TextField(max_length=100)
+    date=models.DateTimeField()
+    user_response=models.BooleanField()
+    name=models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.user)+str('/')+str(self.video)

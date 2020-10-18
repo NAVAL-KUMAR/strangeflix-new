@@ -33,7 +33,6 @@ function initializeplayer(){
     vid.addEventListener("timeupdate",seektimeupdate,false);
     mutebtn.addEventListener("click",vidmute,false);
     volumeslider.addEventListener("change",setvolume,false);
-    document.getElementById("video_control").addEventListener("mouseover",makevisible,false);
 }
 
 window.onload = initializeplayer;
@@ -41,10 +40,10 @@ window.onload = initializeplayer;
 function playPause(){
     if(vid.paused){
         vid.play();
-        playbtn.className='fa fa-play';
+        playbtn.className='fa fa-pause';
     }else{
         vid.pause();
-        playbtn.className='fa fa-pause';
+        playbtn.className='fa fa-play';
     }
 }
 
