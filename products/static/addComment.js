@@ -118,16 +118,56 @@ var theVideo = document.getElementById("my_video");
               vid_currentTime = theVideo.currentTime;
               theVideo.currentTime = vid_currentTime + 10;
             break;
-         case 32:
-            event.preventDefault();
-            if(vid.paused){
-                vid.play();
-                document.getElementById('playpausebtn').className='fa fa-play';
-            }else{
-                vid.pause();
-                document.getElementById('playpausebtn').className='fa fa-pause';
-            }
-            break;
+         
 
       }
   };
+
+  function ignore_v(id){
+            
+            $.ajax({
+
+              type: "GET",
+              url: "/ignore_v",
+              data: {
+                    
+                    notification_v_id : parseInt(id.id)
+              },
+              success: function (response) {
+               
+                $('#notf').empty();
+                var temp = '';
+                for(var key in response.flg){
+            temp = temp + ' <div ';
+if (response.flg[key].user_response)
+    temp = temp + 'style = "background-color: rgba(18,90,87,0.5);margin-left: 5px;margin-right: 5px; padding: 5px 8px;"';
+else
+    temp = temp + 'style = "background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px;padding: 5px 8px;"';
+temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+'" onclick = "ignore_goto_video(this)" style = "margin-left: 5px;" > Go To Video </button ><button id = "'+response.flg[key].id+'" onclick = "ignore_v(this)" style = "margin-left: 5px;" > Ignore </button > <span style = "float: right;"> '+response.flg[key].date+' </span > </P > <h4 > '+response.flg[key].reason+' </h4 > </div > <div style="background-color: white;height: 10px;"></div>';
+
+            
+          
+        }
+        console.log(temp);
+        document.getElementById('notf').innerHTML = temp;
+
+                
+                
+            }
+            });
+  }
+
+  function ignore_goto_video(id){
+    $.ajax({
+       type: "GET",
+              url: "/ignore_goto_video",
+              data: {
+                    
+                    notification_v_id : parseInt(id.id.substring(1))
+              },
+              success: function(response){
+                 console.log(response.id);
+                 window.location.href = response.redirect;
+              }
+    });
+  }

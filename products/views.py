@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite , History
+from .models import Video, Comment, Like, Favourite , History,Tag,Flag
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -22,6 +22,7 @@ from django.http import HttpResponse,JsonResponse
 from django.conf import settings
 import threading
 from django.core.exceptions import ObjectDoesNotExist
+
 
 
 def home(request):
@@ -169,6 +170,8 @@ class VideoView(View):
         most_recent_videos = Video.objects.order_by('-upload_date')[:8]
         context['most_recent_videos'] = most_recent_videos
         video = Video.objects.get(id=id)
+        tag=Tag.objects.filter(video=id)
+        context['tag']=tag
         try:
             go = Like.objects.get(video_id=id, user=request.user)
         except ObjectDoesNotExist:
@@ -308,3 +311,85 @@ def new_video(request):
         return HttpResponseRedirect('video/{}'.format(str(video.id)))
 
     return render(request,'products/new_video.html')
+
+def add_tag(request):
+    if request.method=='POST':
+        video_id=request.POST.get('video_id',False)
+        video=Video.objects.get(id=video_id)
+        tag=Tag()
+        tag.title=request.POST.get('tag_info')
+        tag.video=video
+        tag.save()
+        return HttpResponseRedirect('video/{}'.format(str(video.id)))
+    else:
+        return render(request,'products/index.html')
+
+def flag(request):
+    if request.method=='POST':
+        videoid=request.POST.get('videoid')
+        video=Video.objects.get(id=videoid)
+        flag=Flag()
+        flag.video=video
+        flag.user=request.user
+        flag.reason=request.POST.get('reason_detail')
+        flag.user_response=False
+        flag.date=timezone.datetime.now()
+        flag.name=request.user.first_name
+        flag.save()
+        messages.add_message(request,messages.SUCCESS,'repoted successfully')
+        return HttpResponseRedirect('video/{}'.format(str(video.id)))
+    else:
+        return render(request,'products/index.html')
+
+def notification(request):
+    items=Flag.objects.all().order_by('-date')
+    return render(request,'products/notification.html',{'items':items})
+
+def delete_video(request):
+    if request.method=='POST':
+        id=request.POST.get('idvideo')
+        video_to_delete=Video.objects.get(id=id)
+        video_to_delete.filename.delete()
+        video_to_delete.delete()
+        messages.success(request,'video deleated successfully')
+        return redirect('notification')
+
+   
+    
+def ignore_goto_video(request):
+    if request.method=='GET':
+        id=request.GET.get('notification_v_id',False)
+        flag=Flag.objects.get(id=id)
+
+        flag.user_response=True
+        flag.save()
+        print(flag.reason)
+        print('hello world')
+        redirect='video/{}'.format(str(flag.video.id))
+
+        return JsonResponse({'id':flag.video.id,'redirect':redirect})  
+    
+    
+
+def ignore_v(request):
+    if request.method=='GET':
+        id=request.GET.get('notification_v_id',False)
+        flag=Flag.objects.get(id=id)
+        flag.user_response=True
+        flag.save()
+        flgs=Flag.objects.all().order_by('-date')
+        flg=list(flgs.values())
+        return JsonResponse({'flg': flg})
+
+
+
+    
+    
+    
+    
+    
+    
+
+
+
+
