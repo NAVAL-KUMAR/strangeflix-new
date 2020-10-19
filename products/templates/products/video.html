@@ -172,10 +172,12 @@ Video -
                     <tr>
                          <td>{{ comment.user}}</td>
                          <td>{{ comment.text}}</td>
-                         <td>{{ comment.datetime}}</td>
+                         <td>{{ comment.date_prety}}</td>
                        {% if user.is_authenticated and user == comment.user %}
                         <td><button id = "e{{ comment.id }}" class="btn btn-primary" onclick='openForm(this)'><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i>
 </strong></button></td>
+                        {% endif %}
+                        {% if user.is_authenticated and user == comment.user or user.is_staff%}
                         <td><button id = "d{{ comment.id }}" class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></i>
 </strong></button></td>
                         {% endif %}
@@ -242,6 +244,18 @@ document.getElementById('btn_flag').addEventListener('click',function(){
 document.querySelector('.close').addEventListener('click',function(){
   document.querySelector('.bg-modal').style.display='none';
 });
+
+ document.getElementById('next').addEventListener('click',function (){
+    window.location.href = '/video/{{ next_video }}';
+});
+
+ document.getElementById('previous').addEventListener('click',function (){
+    window.location.href = '/video/{{ previous_video }}';
+});
+
+document.getElementById("my_video").onended = function() {
+     window.location.href = '/video/{{ next_video }}';
+};
 
 </script>
 

@@ -80,10 +80,14 @@
       <a href="{% url 'notification' %}"><i class="fa fa-bell" aria-hidden="true" style="color: green; margin-right: 20px;cursor: pointer;"></i></a>
 
 
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div class="form-inline my-2 my-lg-0" >
+
+        <form action="{% url 'search' %}" method="POST" >
+            {% csrf_token %}
+          <input name ="search_text"  class="form-control mr-sm-2" type="search" placeholder="Search by name, category, tag" aria-label="Search" >
+          <input id ="search_btn" class="btn btn-outline-success my-2 my-sm-0"  type="submit" value="Submit" >
+        </form>
+    </div>
   </div>
 </nav>
 

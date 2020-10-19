@@ -1,5 +1,5 @@
 
-from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo
+from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo,SearchView
 from django.contrib import admin
 from django.urls import path
 from products import views
@@ -13,6 +13,7 @@ urlpatterns = [
     path('favourite_video', FavouriteVideo.as_view()),
     path('history_video', HistoryVideo.as_view()),
     path('video/<int:id>', VideoView.as_view()),
+    path('search/', SearchView.as_view(),name='search'),
     path('add_tag',views.add_tag,name='add_tag'),
     path('ignore_goto_video',views.ignore_goto_video),
     path('ignore_v', views.ignore_v),

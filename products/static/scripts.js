@@ -13,6 +13,7 @@ function initializeplayer(){
     curtimetext = document.getElementById('curtimetext');
     durtimetext = document.getElementById('durtimetext');
     mutebtn = document.getElementById('mutebtn');
+
     volumeslider = document.getElementById('volumeslider');
     playback2 = document.getElementById('playback2.0');
     playback1_5 = document.getElementById('playback1.5');
@@ -30,6 +31,7 @@ function initializeplayer(){
     playback0_5.addEventListener("click",playback0_5speed,false);
     playback0_25.addEventListener("click",playback0_25speed,false);
     seekslider.addEventListener("change",vidSeek,false);
+
     vid.addEventListener("timeupdate",seektimeupdate,false);
     mutebtn.addEventListener("click",vidmute,false);
     volumeslider.addEventListener("change",setvolume,false);
@@ -128,4 +130,5 @@ function playback0_5speed(){
 function playback0_25speed(){
     vid.playbackRate = 0.25;
 }
+
 

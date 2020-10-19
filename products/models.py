@@ -17,6 +17,9 @@ class Video(models.Model):
     subtitle = models.TextField()
     premium = models.BooleanField()
 
+    class Meta:
+        ordering = ('-upload_date',)
+
     def __str__(self):
         return self.title
 
@@ -28,7 +31,7 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.user)
 
-    def date_preety(self):
+    def date_prety(self):
         return self.datetime.strftime('%b %e %Y')
 
 class Like(models.Model):
@@ -43,6 +46,7 @@ class Favourite(models.Model):
 
 class History(models.Model):
     pause_time  =  models.FloatField(default=0)
+    duration_time = models.FloatField(default=0)
     dateTime = models.DateTimeField(auto_now=True, blank=False, null=False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)

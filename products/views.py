@@ -22,6 +22,7 @@ from django.http import HttpResponse,JsonResponse
 from django.conf import settings
 import threading
 from django.core.exceptions import ObjectDoesNotExist
+import random
 
 
 def home(request):
@@ -126,11 +127,31 @@ def logout(request):
 #View for index.html
 #fetching all the video object and displaying it
 
+
+
 class HomeView(View):
     template_name = 'products/index.html'
+
     def get(self, request):
         most_recent_videos = Video.objects.order_by('-upload_date')
         return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': most_recent_videos})
+
+class SearchView(View):
+    template_name = 'products/search.html'
+    def post(self, request):
+        text = self.request.POST.get('search_text')
+        q1 = Video.objects.filter(title__contains = text)
+        q2 = Video.objects.filter(category__contains = text)
+        q4 = Video.objects.filter(description__contains=text)
+        tag = Tag.objects.filter(title__contains = text)
+        tagid = []
+        for x in tag:
+            tagid.append(x.video.id)
+        q3 = Video.objects.filter(id__in = tagid)
+        print(q2)
+        print(q3)
+        q2 = (q1 | q2 | q3 | q4).distinct()
+        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': q2})
 
 
 class FavouriteVideo(View):
@@ -167,7 +188,7 @@ class VideoView(View):
 
         comments = Comment.objects.filter(video__id=id).order_by('-datetime')
         context['comments'] = comments
-        most_recent_videos = Video.objects.order_by('-upload_date')[:8]
+        most_recent_videos = Video.objects.order_by('-upload_date')
         context['most_recent_videos'] = most_recent_videos
         video = Video.objects.get(id=id)
         tag = Tag.objects.filter(video=id)
@@ -189,6 +210,14 @@ class VideoView(View):
         try:
             history = History.objects.get(video_id=id, user=request.user)
             history.dateTime = datetime.now()
+            if history.duration_time - history.pause_time < 5.0:
+                if history.duration_time > history.pause_time:
+                    history.pause_time = 0
+                else:
+                    history.pause_time = 0
+                    history.duration_time = 1
+
+            history.save()
         except ObjectDoesNotExist:
             add_history = History(user=request.user, video=video)
             add_history.save()
@@ -197,6 +226,29 @@ class VideoView(View):
         context['history'] = history
         context['like_dislike'] = go
         context['fav'] = fav
+
+        next_video = []
+        next_v = Video.objects.filter(id__gt = id).order_by('upload_date')
+        for x in next_v:
+            next_video.append(x.id)
+        next_v = Video.objects.filter(id__lte = id).order_by('upload_date')
+        for x in next_v:
+            next_video.append(x.id)
+        context['next_video'] = next_video[0]
+
+        previous_video = []
+        previous_v = Video.objects.filter(id__lt=id).order_by('-upload_date')
+        for x in previous_v:
+            previous_video.append(x.id)
+        previous_v = Video.objects.filter(id__gte=id).order_by('-upload_date')
+        for x in previous_v:
+            previous_video.append(x.id)
+        context['previous_video'] = previous_video[0]
+        print(previous_video)
+        print(next_video)
+        print(previous_video[0])
+        print(id)
+        print(next_video[0])
         return render(request, self.template_name, context)
 
 
@@ -221,6 +273,8 @@ def delete_comment(request):
         Comment.objects.filter(pk = comment_id).delete();
         comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
         return JsonResponse({'comments': list(comments.values())})
+
+
 
 def edit_comment(request):
     if request.method == 'GET':
@@ -412,12 +466,10 @@ def ignore_v(request):
 def save_video_time(request):
     if request.method == 'GET':
         time = request.GET.get('time', False)
+        end = request.GET.get('end', False)
         id = request.GET.get('video_id', False)
-        print(id)
-        print(time)
         history = History.objects.get(video_id=id, user=request.user)
         history.pause_time = time
+        history.duration_time = end
         history.save()
         return JsonResponse({'TEXT':"sAVED"})
-
-

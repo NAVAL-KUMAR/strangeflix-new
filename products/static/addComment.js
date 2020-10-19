@@ -281,7 +281,8 @@ temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+
       url: "/save_video_time",
        data: {
             video_id : $('#video_id').val(),
-            time : document.getElementById('my_video').currentTime
+            time : document.getElementById('my_video').currentTime,
+            end : document.getElementById('my_video').duration
       },
       success: function (response) {
         console.log(response);
@@ -289,3 +290,5 @@ temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+
     });
     },1000);
 });
+
+
