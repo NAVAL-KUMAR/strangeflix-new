@@ -22,7 +22,9 @@ jQuery(document).ready(function () {
             temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
             temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
             //{% endif %}
+
             }
+           temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-primary" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
 
             temp = temp + '</tr>';
 
@@ -164,7 +166,7 @@ var theVideo = document.getElementById("my_video");
                     temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
 
                     }
-
+                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-primary" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
                     temp = temp + '</tr>';
 
                     $('#commment_list').append(temp);
@@ -198,12 +200,14 @@ var theVideo = document.getElementById("my_video");
                     var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
                     //{% if user.is_authenticated and user == comment.user %}
                     console.log(response.comments);
-                    if(user_id == response.comments[key].user_id){
+                    if(user_id == response.comments[key].user_id || response.sol){
                      temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
                     temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
             //{% endif %}
                //{% endif %}
                     }
+
+                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-primary" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
 
                     temp = temp + '</tr>';
 
@@ -222,6 +226,37 @@ var theVideo = document.getElementById("my_video");
     function closeForm() {
     document.getElementById("popupForm").style.display = "none";
     }
+    function closeForm_flag() {
+    document.getElementById("popupForm_flag").style.display = "none";
+    }
+
+
+    function openForm_flag(id) {
+        document.getElementById("popupForm_flag").style.display = "block";
+
+
+        $(document).ready(function () {
+            $("#send").click(function () {
+                var txt = $("#send_reason").val();
+
+                $.ajax({
+              type: "GET",
+              url: "/add_comment_flag",
+              data: {
+                    video_id : $('#video_id').val(),
+                    comment_id : parseInt(id.id.substring(1)),
+                    text : txt
+              },
+              success: function (response) {
+            
+                document.getElementById("popupForm_flag").style.display = "none";
+            }
+            });
+            return false;
+            });
+        });
+
+  }
 
     function ignore_v(id){
 
@@ -243,12 +278,16 @@ if (response.flg[key].user_response)
     temp = temp + 'style = "background-color: rgba(18,90,87,0.5);margin-left: 5px;margin-right: 5px; padding: 5px 8px;"';
 else
     temp = temp + 'style = "background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px;padding: 5px 8px;"';
-temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+'" onclick = "ignore_goto_video(this)" style = "margin-left: 5px;" > Go To Video </button ><button id = "'+response.flg[key].id+'" onclick = "ignore_v(this)" style = "margin-left: 5px;" > Ignore </button > <span style = "float: right;"> '+response.flg[key].date+' </span > </P > <h4 > '+response.flg[key].reason+' </h4 > </div > <div style="background-color: white;height: 10px;"></div>';
+temp = temp + '><P>'+response.flg[key].name+' <button id = "'+response.flg[key].id+'" onclick = "ignore_goto_video(this)" style = "margin-left: 5px;" > Go To Video </button ><button id = "'+response.flg[key].id+'" onclick = "ignore_v(this)" style = "margin-left: 5px;" > Ignore </button >'; 
+ if(typeof response.flg[key].comment!= 'undefined')
+  temp = temp + '<button id="d'+response.flg[key].id+'"onclick="delete_comm(this)"  style="cursor: pointer;" >delete comment</button>';
+
+temp = temp + '<span style = "float: right;"> '+response.flg[key].date+' </span > </P > <h4 > '+response.flg[key].reason+' </h4 > </div > <div style="background-color: white;height: 10px;"></div>';
 
 
 
         }
-        console.log(temp);
+        
         document.getElementById('notf').innerHTML = temp;
 
 
@@ -289,3 +328,19 @@ temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+
     });
     },1000);
 });
+
+function delete_comm(id){
+    $.ajax({
+       type: "GET",
+              url: "/delete_comm",
+              data: {
+
+                    notf_id : parseInt(id.id.substring(1))
+
+              },
+              success: function(response){
+
+                 alert("comment deleted sucessfully");
+              }
+    });
+  }

@@ -22,6 +22,8 @@ urlpatterns = [
     path('delete_video',views.delete_video,name='delete_video'),
     path('delete_comment',views.delete_comment),
     path('edit_comment',views.edit_comment),
+    path('add_comment_flag',views.add_comment_flag),
+     path('delete_comm',views.delete_comm),
     path('comment_list',views.comment_list),
     path('liked', views.liked),
     path('disliked', views.disliked),

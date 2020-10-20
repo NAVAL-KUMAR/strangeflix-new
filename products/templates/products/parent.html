@@ -76,8 +76,9 @@
 
 
     </ul>
-
+      {%if user.is_staff%}
       <a href="{% url 'notification' %}"><i class="fa fa-bell" aria-hidden="true" style="color: green; margin-right: 20px;cursor: pointer;"></i></a>
+      {% endif%}
 
 
     <form class="form-inline my-2 my-lg-0">

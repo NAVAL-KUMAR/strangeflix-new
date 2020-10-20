@@ -16,11 +16,16 @@ style="background-color: rgba(18,90,87,0.5);margin-left: 5px;margin-right: 5px; 
 style="background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px;padding: 5px 8px;"
  >
 
-<P>{{notf.user.first_name}}
+<P>{{notf.name}}
 
 
 	<button id="c{{notf.id}}" onclick="ignore_goto_video(this)" style="cursor: pointer;" >Go to Video</button>
 	<button  id="{{notf.id}}" onclick="ignore_v(this)" style="margin-left: 5px;">Ignore</button>
+	{% if notf.comment %}
+    <button id="d{{notf.id}}" onclick="delete_comm(this)"  style="cursor: pointer;" >delete comment</button>
+    {%endif%}
+    
+	
 
 <span style="float: right;">{{notf.date}}</span></P>
 
@@ -46,3 +51,9 @@ style="background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px
 
 
 {% endblock%}
+
+
+
+​
+
+ 

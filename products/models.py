@@ -55,7 +55,8 @@ class Tag(models.Model):
         return self.title+str("/")+str(self.video)
 
 class Flag(models.Model):
-    video=models.ForeignKey(Video,on_delete=models.CASCADE)
+    video=models.ForeignKey(Video,on_delete=models.CASCADE,blank=True,null=True)
+    comment=models.ForeignKey(Comment,on_delete=models.CASCADE,blank=True,null=True)
     user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
     reason=models.TextField(max_length=100)
     date=models.DateTimeField()
