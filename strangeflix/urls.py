@@ -18,7 +18,7 @@ urlpatterns = [
     path('ignore_goto_video',views.ignore_goto_video),
     path('ignore_v', views.ignore_v),
     path('comment',views.comment),
-    path('flag',views.flag,name='flag'),
+    path('add_video_flag',views.add_video_flag),
     path('notification',views.notification,name='notification'),
     path('delete_video',views.delete_video,name='delete_video'),
     path('delete_comment',views.delete_comment),

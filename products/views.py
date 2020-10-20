@@ -410,24 +410,6 @@ def add_tag(request):
         return render(request, 'products/index.html')
 
 
-def flag(request):
-    if request.method == 'POST':
-        videoid = request.POST.get('videoid')
-        video = Video.objects.get(id=videoid)
-        flag = Flag()
-        flag.video = video
-        flag.user = request.user
-        flag.reason = request.POST.get('reason_detail')
-        flag.user_response = False
-        flag.date = timezone.datetime.now()
-        flag.name = request.user.first_name
-        flag.save()
-        messages.add_message(request, messages.SUCCESS, 'repoted successfully')
-        return HttpResponseRedirect('video/{}'.format(str(video.id)))
-    else:
-        return render(request, 'products/index.html')
-
-
 def notification(request):
     items = Flag.objects.all().order_by('-date')
     return render(request, 'products/notification.html', {'items': items})
@@ -486,9 +468,10 @@ def add_comment_flag(request):
         flag=Flag()
         flag.video=Video.objects.get(id=video_id)
         comment = Comment.objects.get(pk = comment_id)
+        comment_text=comment.text
         flag.comment=comment
         flag.user=request.user
-        flag.reason=text
+        flag.reason='(reason to flag :'+text+')'+'--Comment :'+comment_text
         flag.date=timezone.datetime.now()
         flag.user_response=False
         flag.name=request.user.first_name
@@ -503,6 +486,21 @@ def delete_comm(request):
         comment=flag.comment
         comment.delete()
         return JsonResponse({})
+
+def add_video_flag(request):
+    if request.method == 'GET':
+        video_id = request.GET.get('video_id', False)
+        text = request.GET.get('text', False)
+        flag=Flag()
+        flag.video=Video.objects.get(id=video_id)
+        flag.user=request.user
+        flag.reason=text
+        flag.date=timezone.datetime.now()
+        flag.user_response=False
+        flag.name=request.user.first_name
+        flag.save()
+        return JsonResponse({})
+
 
 
 
