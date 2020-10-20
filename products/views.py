@@ -288,7 +288,11 @@ def edit_comment(request):
         comment.text = text
         comment.save()
         comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
-        return JsonResponse({'comments': list(comments.values())})
+        sol = False
+        if request.user.is_staff:
+            sol = True
+
+        return JsonResponse({'comments': list(comments.values()), 'sol': sol})
 
 
 
@@ -473,3 +477,33 @@ def save_video_time(request):
         history.duration_time = end
         history.save()
         return JsonResponse({'TEXT':"sAVED"})
+
+def add_comment_flag(request):
+    if request.method == 'GET':
+        comment_id = request.GET.get('comment_id',False)
+        video_id = request.GET.get('video_id', False)
+        text = request.GET.get('text', False)
+        flag=Flag()
+        flag.video=Video.objects.get(id=video_id)
+        comment = Comment.objects.get(pk = comment_id)
+        flag.comment=comment
+        flag.user=request.user
+        flag.reason=text
+        flag.date=timezone.datetime.now()
+        flag.user_response=False
+        flag.name=request.user.first_name
+        flag.save()
+        return JsonResponse({})
+
+def delete_comm(request):
+    if request.method == 'GET':
+        flag_id = request.GET.get('notf_id',False)
+        flag=Flag.objects.get(id=flag_id)
+        flag.user_response=True
+        comment=flag.comment
+        comment.delete()
+        return JsonResponse({})
+
+
+
+

@@ -12,17 +12,18 @@ Home
 <main role="main">
 
   <div class="container-fluid">
-    <div  id = "show_video" class="form-row">
+    <div  id = "show_video" class="row justify-content-md-center">
 
       {% for video in most_recent_videos %}
 
-      <div class="form-group col-md-3">
-          {% load static %}
-          <a href='/video/{{ video.id }}'>
-          <img style="width:100%; height:235px;" src="{{video.thumbtail.url}}" alt="No Video Present" class="img-thumbnail"></a>
-          <h6 style="margin-top: 7px;margin-left: 15px; ">{{ video.title }}</h6>
-            <small style="margin-top: 0px;margin-left: 16px;" class="text-muted">Uploaded by {{ video.user }} on {{ video.datetime }}</small>
-          </div>
+            <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
+                 {% load static %}
+              <a href='/video/{{ video.id }}'>
+              <img src="{{video.thumbtail.url}}" class="card-img-top" alt="No Video Present">
+              </a>
+                  <p class = "mx-3 my-3"><strong class="font-italic">{{ video.title }}</strong><br><small class="text-muted" >Uploaded by {{ video.user }} on {{ video.upload_date }}</small></p>
+            </div>
+
 
             {% endfor %}
         </div>

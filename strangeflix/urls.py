@@ -25,6 +25,8 @@ urlpatterns = [
     path('edit_comment',views.edit_comment),
     path('comment_list',views.comment_list),
     path('liked', views.liked),
+    path('add_comment_flag',views.add_comment_flag),
+    path('delete_comm',views.delete_comm),
     path('disliked', views.disliked),
     path('save_video_time', views.save_video_time),
     path('favourite', views.favourite),

@@ -15,16 +15,17 @@ jQuery(document).ready(function () {
       console.log(response);
         $('#commment_list').empty();
         for(var key in response.comments){
-            var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
-            //{% if user.is_authenticated and user == comment.user %}
-            console.log(response.comments);
-            if(user_id == response.comments[key].user_id){
-            temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
-            temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
-            //{% endif %}
-            }
+            var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
+                    if(user_id == response.comments[key].user_id){
 
-            temp = temp + '</tr>';
+                     temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+                    temp = temp + '<button id = "d'+response.comments[key].id+'"class="btn btn-danger mx-1" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+
+                    }
+
+                    temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+                     temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
+
 
             $('#commment_list').append(temp);
            // console.log($('#comment_list'));
@@ -100,7 +101,6 @@ jQuery(document).ready(function () {
       success: function (response) {
       console.log(response);
             if(response.fav){
-            alert("Video Added to Favourite");
             document.getElementById('favourite').style.color='red';
             }
             else
@@ -155,17 +155,17 @@ var theVideo = document.getElementById("my_video");
                 console.log(response);
                 $('#commment_list').empty();
                 for(var key in response.comments){
-                    var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
-
-                    console.log(response.comments);
+                    var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
                     if(user_id == response.comments[key].user_id){
 
-                     temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
-                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
+                     temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+                    temp = temp + '<button id = "d'+response.comments[key].id+'"class="btn btn-danger mx-1" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
 
                     }
+                    temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
 
-                    temp = temp + '</tr>';
+
+                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
 
                     $('#commment_list').append(temp);
                    // console.log($('#comment_list'));
@@ -195,17 +195,19 @@ var theVideo = document.getElementById("my_video");
                 console.log(response);
                 $('#commment_list').empty();
                 for(var key in response.comments){
-                    var temp = "<tr><td>"+response.comments[key].user_id+"</td>"+"<td>"+response.comments[key].text+"</td>"+"<td>"+response.comments[key].datetime+"</td>";
-                    //{% if user.is_authenticated and user == comment.user %}
-                    console.log(response.comments);
+                   var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
                     if(user_id == response.comments[key].user_id){
-                     temp = temp + '<td><button id="e'+response.comments[key].id+'" class="btn btn-primary" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></strong></button></td>';
-                    temp = temp + '<td><button id="d'+response.comments[key].id+'"class="btn btn-danger" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></strong></button></td>';
-            //{% endif %}
-               //{% endif %}
+
+                     temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+                    temp = temp + '<button id = "d'+response.comments[key].id+'"class="btn btn-danger mx-1" onclick="delete_comment(this)"><strong><i class="fa fa-trash" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+
                     }
 
-                    temp = temp + '</tr>';
+                    temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
+
+
+                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
+
 
                     $('#commment_list').append(temp);
                    // console.log($('#comment_list'));
@@ -222,6 +224,39 @@ var theVideo = document.getElementById("my_video");
     function closeForm() {
     document.getElementById("popupForm").style.display = "none";
     }
+
+    function closeForm_flag() {
+    document.getElementById("popupForm_flag").style.display = "none";
+    }
+
+
+    function openForm_flag(id) {
+        document.getElementById("popupForm_flag").style.display = "block";
+
+
+        $(document).ready(function () {
+            $("#send").click(function () {
+                var txt = $("#send_reason").val();
+
+                $.ajax({
+              type: "GET",
+              url: "/add_comment_flag",
+              data: {
+                    video_id : $('#video_id').val(),
+                    comment_id : parseInt(id.id.substring(1)),
+                    text : txt
+              },
+              success: function (response) {
+
+                document.getElementById("popupForm_flag").style.display = "none";
+            }
+            });
+            return false;
+            });
+        });
+
+  }
+
 
     function ignore_v(id){
 
@@ -243,12 +278,15 @@ if (response.flg[key].user_response)
     temp = temp + 'style = "background-color: rgba(18,90,87,0.5);margin-left: 5px;margin-right: 5px; padding: 5px 8px;"';
 else
     temp = temp + 'style = "background-color: rgba(90,255,101,0.5);margin-left: 5px;margin-right: 5px;padding: 5px 8px;"';
-temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+'" onclick = "ignore_goto_video(this)" style = "margin-left: 5px;" > Go To Video </button ><button id = "'+response.flg[key].id+'" onclick = "ignore_v(this)" style = "margin-left: 5px;" > Ignore </button > <span style = "float: right;"> '+response.flg[key].date+' </span > </P > <h4 > '+response.flg[key].reason+' </h4 > </div > <div style="background-color: white;height: 10px;"></div>';
+temp = temp + '><P>'+response.flg[key].name+' <button id = "'+response.flg[key].id+'" onclick = "ignore_goto_video(this)" style = "margin-left: 5px;" > Go To Video </button ><button id = "'+response.flg[key].id+'" onclick = "ignore_v(this)" style = "margin-left: 5px;" > Ignore </button >';
+ if(typeof response.flg[key].comment!= 'undefined')
+  temp = temp + '<button id="d'+response.flg[key].id+'"onclick="delete_comm(this)"  style="cursor: pointer;" >delete comment</button>';
+
+temp = temp + '<span style = "float: right;"> '+response.flg[key].date+' </span > </P > <h4 > '+response.flg[key].reason+' </h4 > </div > <div style="background-color: white;height: 10px;"></div>';
 
 
 
         }
-        console.log(temp);
         document.getElementById('notf').innerHTML = temp;
 
 
@@ -290,5 +328,21 @@ temp = temp + '>'+response.flg[key].name+' <button id = "'+response.flg[key].id+
     });
     },1000);
 });
+
+function delete_comm(id){
+    $.ajax({
+       type: "GET",
+              url: "/delete_comm",
+              data: {
+
+                    notf_id : parseInt(id.id.substring(1))
+
+              },
+              success: function(response){
+
+                 alert("comment deleted sucessfully");
+              }
+    });
+  }
 
 

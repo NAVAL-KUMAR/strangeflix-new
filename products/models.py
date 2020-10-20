@@ -40,7 +40,7 @@ class Like(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
 
 class Favourite(models.Model):
-    favourite = models.BooleanField(default=False)
+    favourite = models.BooleanField(default = False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
 
@@ -61,6 +61,7 @@ class Tag(models.Model):
 class Flag(models.Model):
     video=models.ForeignKey(Video,on_delete=models.CASCADE)
     user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
     reason=models.TextField(max_length=100)
     date=models.DateTimeField()
     user_response=models.BooleanField()
