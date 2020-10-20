@@ -24,6 +24,9 @@ import threading
 from django.core.exceptions import ObjectDoesNotExist
 import random
 
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def home(request):
     return render(request, 'products/home.html');

@@ -91,7 +91,7 @@ Video -
 
 
 
-        {% if user.is_staff%}
+       
         <div class="row" >
            <div class="container">
 
@@ -144,6 +144,7 @@ Video -
                 </form>
               </div>
            </div>
+            {% if user.is_staff%}
                <form class="form-inline" action="{%url 'add_tag' %}" method="POST">
                    {% csrf_token %}
                   <div class="form-group mb-2">

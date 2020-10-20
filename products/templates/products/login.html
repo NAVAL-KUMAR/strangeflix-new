@@ -39,6 +39,10 @@
 </form>
 
  <br/>
+ <br/>
+ <a href="{% url 'social:begin' 'facebook' %}">login with facebook</a>
+ <br>
+ <a href="{% url 'social:begin' 'google-oauth2' %}">login with google</a>
   <hr>
   <a style="color: red;" href="{%url 'reset_password'%}"><b>forgot password click here!</b></a>
   <br>

@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = '_$x6u)qf_40)o%9q5m-+l+)$hpf940rn*xoyk&mkp5ytr69(wv'
+SECRET_KEY = '_$x6u)qf_40)o%9q5######################'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,19 +41,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-
+  
 
     #allauth
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
 
     #providers
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google'
 
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.google',
+
+    'social_django',
 
 ]
 
@@ -65,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'strangeflix.urls'
@@ -80,6 +82,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -153,10 +158,20 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER='kumarvivek282880@gmail.com'
 EMAIL_HOST_PASSWORD='Vivek@123'
 
-AUTHENTICATION_BACKENDS=(
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+  
 
-    )
-SITE_ID=1
-LOGIN_REDIRECT_URL='/'
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+)
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL='home_view'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '3373###########'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd82e6821############'  # App Secret
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='50623385169-9f#################'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='BxngdAW####################s'
+
