@@ -40,21 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
 
-
-
-    #allauth
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    #providers
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google'
-
-
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google'
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'strangeflix.urls'
@@ -80,6 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -151,12 +146,20 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='kumarvivek282880@gmail.com'
-EMAIL_HOST_PASSWORD='Vivek@123'
+EMAIL_HOST_PASSWORD='Sonu@12345'
 
-AUTHENTICATION_BACKENDS=(
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-
+    'social_core.backends.google.GoogleOAuth2',
     )
-SITE_ID=1
-LOGIN_REDIRECT_URL='/'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL='home_view'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '3373394489404630'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd82e6821700d2fc1571c3b3a49c48d34'  # App Secret
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='50623385169-9fbhgjo83k954ijqht6b1bi3ogsrj7mt.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='BxngdAWN_Tcy3_ZGhyJNira8'

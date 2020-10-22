@@ -6,9 +6,10 @@ from products import views
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.urls import path,include
 
 urlpatterns = [
-    path('', HomeView.as_view()),
+    path('', HomeView.as_view(),name='home_view'),
     path('new_video', views.new_video,name='new_video'),
     path('create_playlist', views.create_playlist,name='create_playlist'),
     path('favourite_video', FavouriteVideo.as_view()),
@@ -20,8 +21,9 @@ urlpatterns = [
     path('ignore_goto_video',views.ignore_goto_video),
     path('ignore_v', views.ignore_v),
     path('comment',views.comment),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('add_to_playlist',views.add_to_playlist),
-    path('flag',views.flag,name='flag'),
+    path('add_video_flag',views.add_video_flag),
     path('notification',views.notification,name='notification'),
     path('delete_video',views.delete_video,name='delete_video'),
     path('delete_comment',views.delete_comment),

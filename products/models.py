@@ -14,7 +14,7 @@ class Video(models.Model):
     filename = models.FileField(upload_to='', blank=True)
     thumbtail = models.ImageField(upload_to='', blank=True)
     link = models.URLField(max_length=200, blank=True)
-    subtitle = models.TextField()
+    subtitle = models.FileField(upload_to='', blank=True)
     premium = models.BooleanField()
 
     class Meta:

@@ -225,10 +225,6 @@ var theVideo = document.getElementById("my_video");
     document.getElementById("popupForm").style.display = "none";
     }
 
-    function closeForm_flag() {
-    document.getElementById("popupForm_flag").style.display = "none";
-    }
-
 
     function openForm_flag(id) {
         document.getElementById("popupForm_flag").style.display = "block";
@@ -247,7 +243,7 @@ var theVideo = document.getElementById("my_video");
                     text : txt
               },
               success: function (response) {
-
+                alert("comment reported sucessfully");
                 document.getElementById("popupForm_flag").style.display = "none";
             }
             });
@@ -257,6 +253,39 @@ var theVideo = document.getElementById("my_video");
 
   }
 
+function closeForm_flag() {
+    document.getElementById("popupForm_flag").style.display = "none";
+    }
+
+  function closeForm_flag_btn() {
+    document.getElementById("popupForm_v_flag").style.display = "none";
+    }
+    function openForm_flag_video(id) {
+        document.getElementById("popupForm_v_flag").style.display = "block";
+
+
+        $(document).ready(function () {
+            $("#send_flag").click(function () {
+                var txt = $("#reason_to_flag").val();
+
+                $.ajax({
+              type: "GET",
+              url: "/add_video_flag",
+              data: {
+                    video_id : $('#video_id').val(),
+                    text : txt
+              },
+              success: function (response) {
+                alert("video reported sucessfully");
+
+                document.getElementById("popupForm_v_flag").style.display = "none";
+            }
+            });
+            return false;
+            });
+        });
+
+  }
 
     function ignore_v(id){
 

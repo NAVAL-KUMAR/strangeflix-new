@@ -141,7 +141,7 @@ Video -
 
 
                                                         <div class="col-md-3 col-sm-3">
-                                                            <i id="btn_flag" class="fa fa-flag" style="cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
+                                                            <i id="btn_flag" onclick="openForm_flag_video(this)"  class="fa fa-flag" style="cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
 
                                                         </div>
                                               </div>
@@ -269,20 +269,19 @@ Video -
                   </div>
                </div>
               <div>
-                  <div class="bg-modal" style="width: 100%; height: 200%;background-color: black;opacity: 0.85;position: absolute;top: 0;justify-content: center;align-items: center;display: none;">
-                    <div class="close" style=" position: absolute;top: 0;right: 14px;font-size: 42px;transform: rotate(45deg);cursor: pointer;">+</div>
-                        <h4 style="color: blue"><b>Reason To Repote</b></h4>
-                        <form method="POST" action="{% url 'flag' %}">
-                                {% csrf_token %}
-                                <label for="reason_detail"><h5><b>Additional Information:</b></h5></label>
-                                <br>
-                                <textarea style="height: 80%;width: 90%;" type="text" name="reason_detail" ></textarea>
-                                <input type="hidden" name="videoid" value='{{ video.id }}'>
-                                <br>
-                                <br>
-                              <input value="submit" type="submit" style="border-radius: 5px; width: 40%;height: 30%; color: green;">
-                          </form>
-                    </div>
+                   <div class="loginPopup">
+                      <div class="formPopup" id="popupForm_v_flag">
+                        <form action="" class="formContainer">
+
+                          <label for="comment">
+                            <strong>Reason to report:</strong>
+                          </label>
+                            <textarea rows="10" cols="25"  id="reason_to_flag" placeholder="add reason" name="comment" required></textarea>
+                            <button type="button" id = "send_flag" class="btn">Report</button>
+                            <button type="button" class="btn cancel" onclick="closeForm_flag_btn()">Close</button>
+                        </form>
+                      </div>
+                   </div>
               </div>
 
             </div>
@@ -315,13 +314,6 @@ Video -
 
 
 <script type="text/javascript">
-document.getElementById('btn_flag').addEventListener('click',function(){
-  document.querySelector('.bg-modal').style.display='flex';
-
-});
-document.querySelector('.close').addEventListener('click',function(){
-  document.querySelector('.bg-modal').style.display='none';
-});
 
  document.getElementById('next').addEventListener('click',function (){
     window.location.href = '/video/{{ next_video }}/{{ playlist_id }}';
