@@ -22,6 +22,8 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+    def date_prety(self):
+        return self.datetime.strftime('%d-%m-%Y %H:%M:%S')
 
 class Comment(models.Model):
     text = models.TextField(max_length=300)
@@ -32,7 +34,7 @@ class Comment(models.Model):
         return str(self.user)
 
     def date_prety(self):
-        return self.datetime.strftime('%b %e %Y')
+        return self.datetime.strftime('%d-%m-%Y %H:%M:%S')
 
 class Like(models.Model):
     like = models.IntegerField(default=0)
@@ -50,6 +52,9 @@ class History(models.Model):
     dateTime = models.DateTimeField(auto_now=True, blank=False, null=False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
+
+    def date_prety(self):
+        return self.dateTime.strftime('%d-%m-%Y %H:%M:%S')
 
 class Tag(models.Model):
     title=models.CharField(max_length=25)
@@ -69,3 +74,22 @@ class Flag(models.Model):
 
     def __str__(self):
         return str(self.user)+str('/')+str(self.video)
+
+    def date_prety(self):
+        return self.date.strftime('%d-%m-%Y %H:%M:%S')
+
+class Playlist(models.Model):
+    title = models.CharField(max_length=30)
+    description = models.TextField(max_length=300, null=True,blank=True)
+    thumbtail = models.ImageField(upload_to='', blank=True)
+    upload_date = models.DateTimeField(auto_now=True, blank=False, null=False)
+    premium = models.BooleanField()
+
+class playlist_video(models.Model):
+    name = models.CharField(max_length=50)
+    datetime = models.DateTimeField()
+    video=models.ForeignKey(Video,on_delete=models.CASCADE)
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+
+    def date_prety(self):
+        return self.datetime.strftime('%d-%m-%Y %H:%M:%S')

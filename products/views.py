@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite , History,Tag,Flag
+from .models import Video, Comment, Like, Favourite, History, Tag, Flag, Playlist, playlist_video
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -136,6 +136,16 @@ class HomeView(View):
         most_recent_videos = Video.objects.order_by('-upload_date')
         return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': most_recent_videos})
 
+
+
+class PlaylistView(View):
+    template_name = 'products/playlist.html'
+
+    def get(self, request):
+        playlist_list = Playlist.objects.order_by('-upload_date')
+        return render(request, self.template_name, {'playlist_list': playlist_list})
+
+
 class SearchView(View):
     template_name = 'products/search.html'
     def post(self, request):
@@ -160,7 +170,7 @@ class FavouriteVideo(View):
     def get(self, request):
         favourite_videos = Favourite.objects.filter(user=request.user).filter(favourite=True)
         return render(request, self.template_name,
-                      {'favourite_videos': favourite_videos})
+                      {'favourite_videos': favourite_videos , 'playlist_id' : 0})
 
 
 class HistoryVideo(View):
@@ -169,7 +179,7 @@ class HistoryVideo(View):
     def get(self, request):
         history_videos = History.objects.filter(user=request.user).order_by('-dateTime')[:15]
         return render(request, self.template_name,
-                      {'history_videos': history_videos})
+                      {'history_videos': history_videos,'playlist_id': 0})
 
 
 
@@ -179,20 +189,67 @@ class HistoryVideo(View):
 class VideoView(View):
     template_name = 'products/video.html'
 
-    def get(self, request, id):
+    def get(self, request, id, id1):
+
+        if id1 == 0:
+
+            next_video = []
+            next_v = Video.objects.filter(id__gt=id).order_by('upload_date')
+            for x in next_v:
+                next_video.append(x)
+            next_v = Video.objects.filter(id__lte=id).order_by('upload_date')
+            for x in next_v:
+                next_video.append(x)
+            context = {'next_video' : next_video[0].id}
+
+            previous_video = []
+            previous_v = Video.objects.filter(id__lt=id).order_by('-upload_date')
+            for x in previous_v:
+                previous_video.append(x)
+            previous_v = Video.objects.filter(id__gte=id).order_by('-upload_date')
+            for x in previous_v:
+                previous_video.append(x)
+            context['previous_video'] = previous_video[0].id
+            context['most_recent_videos'] = next_video
+        else:
+            playlist = playlist_video.objects.filter(playlist_id = id1).order_by('video_id')
+            next_video = []
+            for x in playlist:
+                v = Video.objects.get(id=x.video_id)
+                next_video.append(v)
+
+            if id == 0:
+                id = next_video[0].id
+                next_video.append(next_video[0])
+                next_video.pop(0)
+            else:
+                st = []
+                while next_video[0].id != id:
+                    st.append(next_video[0])
+                    next_video.pop(0)
+                st.append(next_video[0])
+                next_video.pop(0)
+                for x in st:
+                    next_video.append(x)
+                print(next_video)
+            context = {'next_video': next_video[0].id}
+            if len(next_video)==1:
+                context['previous_video'] = next_video[0].id
+            else:
+                context['previous_video'] = next_video[len(next_video)-2].id
+            context['most_recent_videos'] = next_video
+
         video_by_id = get_object_or_404(Video, pk=id)
         video_by_id.views = video_by_id.views + 1
         video_by_id.save()
 
-        context = {'video': video_by_id}
-
+        context['video'] = video_by_id
         comments = Comment.objects.filter(video__id=id).order_by('-datetime')
         context['comments'] = comments
-        most_recent_videos = Video.objects.order_by('-upload_date')
-        context['most_recent_videos'] = most_recent_videos
         video = Video.objects.get(id=id)
         tag = Tag.objects.filter(video=id)
         context['tag'] = tag
+
         try:
             go = Like.objects.get(video_id=id, user=request.user)
         except ObjectDoesNotExist:
@@ -226,29 +283,10 @@ class VideoView(View):
         context['history'] = history
         context['like_dislike'] = go
         context['fav'] = fav
+        context['playlist_id'] = id1
 
-        next_video = []
-        next_v = Video.objects.filter(id__gt = id).order_by('upload_date')
-        for x in next_v:
-            next_video.append(x.id)
-        next_v = Video.objects.filter(id__lte = id).order_by('upload_date')
-        for x in next_v:
-            next_video.append(x.id)
-        context['next_video'] = next_video[0]
+        print(context)
 
-        previous_video = []
-        previous_v = Video.objects.filter(id__lt=id).order_by('-upload_date')
-        for x in previous_v:
-            previous_video.append(x.id)
-        previous_v = Video.objects.filter(id__gte=id).order_by('-upload_date')
-        for x in previous_v:
-            previous_video.append(x.id)
-        context['previous_video'] = previous_video[0]
-        print(previous_video)
-        print(next_video)
-        print(previous_video[0])
-        print(id)
-        print(next_video[0])
         return render(request, self.template_name, context)
 
 
@@ -452,7 +490,7 @@ def ignore_goto_video(request):
         flag.save()
         print(flag.reason)
         print('hello world')
-        redirect = 'video/{}'.format(str(flag.video.id))
+        redirect = 'video/{}/0'.format(str(flag.video.id))
 
         return JsonResponse({'id': flag.video.id, 'redirect': redirect})
 
@@ -506,4 +544,45 @@ def delete_comm(request):
 
 
 
+
+def create_playlist(request):
+    context={"new_playlist" : False}
+    videos = Video.objects.order_by('-upload_date')
+    context["videos"] = videos
+    if request.method == 'POST':
+        bvl = False
+        playlist = Playlist()
+        playlist.title = request.POST.get('playlist_title')
+        playlist.description = request.POST.get('playlist_description')
+        img = request.FILES.get('playlist_thumbtail')
+        if img == None:
+            bvl = True
+            messages.add_message(request, messages.ERROR, 'add a valid thumbtail')
+        if bvl:
+            return render(request, 'products/create_playlist.html',context)
+        playlist.thumbtail = img
+        if request.POST.get('playlist_premium'):
+            playlist.premium = True
+        else:
+            playlist.premium = False
+        playlist.upload_date = timezone.datetime.now()
+        playlist.save()
+        context["new_playlist"] = True
+        context["playlist_id"]=playlist.id
+        return render(request, 'products/create_playlist.html' , context)
+    return render(request, 'products/create_playlist.html',context)
+
+def add_to_playlist(request):
+    if request.method == "GET":
+        video_id = request.GET.get('video_id', False)
+        video = Video.objects.get(pk=video_id)
+        playlist_id = request.GET.get('playlist_id', False)
+        playlist = Playlist.objects.get(pk = playlist_id)
+        try:
+            pv = playlist_video.objects.get(video = video, playlist = playlist)
+        except ObjectDoesNotExist:
+            pv = playlist_video(video=video,datetime=video.upload_date,name = video.title, playlist=playlist)
+            pv.save()
+        pv = playlist_video.objects.filter(playlist = playlist)
+        return JsonResponse({"pv":list(pv.values())})
 

@@ -1,5 +1,5 @@
 
-from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo,SearchView
+from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo,SearchView,PlaylistView
 from django.contrib import admin
 from django.urls import path
 from products import views
@@ -10,14 +10,17 @@ from django.conf import settings
 urlpatterns = [
     path('', HomeView.as_view()),
     path('new_video', views.new_video,name='new_video'),
+    path('create_playlist', views.create_playlist,name='create_playlist'),
     path('favourite_video', FavouriteVideo.as_view()),
     path('history_video', HistoryVideo.as_view()),
-    path('video/<int:id>', VideoView.as_view()),
+    path('video/<int:id>/<int:id1>', VideoView.as_view()),
     path('search/', SearchView.as_view(),name='search'),
+    path('playlist/', PlaylistView.as_view(),name='playlist'),
     path('add_tag',views.add_tag,name='add_tag'),
     path('ignore_goto_video',views.ignore_goto_video),
     path('ignore_v', views.ignore_v),
     path('comment',views.comment),
+    path('add_to_playlist',views.add_to_playlist),
     path('flag',views.flag,name='flag'),
     path('notification',views.notification,name='notification'),
     path('delete_video',views.delete_video,name='delete_video'),

@@ -1,0 +1,33 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+Playlist
+{% endblock %}
+
+{% block body %}
+
+</head>
+<body>
+
+<main role="main">
+
+  <div class="container-fluid">
+    <div  class="row justify-content-md-center">
+
+      {% for playlist in playlist_list %}
+
+            <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
+                 {% load static %}
+              <a href='/video/0/{{ playlist.id }}'>
+              <img src="{{playlist.thumbtail.url}}" class="card-img-top" alt="No Video Present">
+              </a>
+                  <p class = "mx-3 my-3"><strong class="font-italic">{{ playlist.title }}</strong><br><small class="text-muted" >Uploaded on {{ playlist.upload_date }}</small></p>
+            </div>
+
+
+            {% endfor %}
+        </div>
+      </div>
+
+</main>
+{% endblock %}
