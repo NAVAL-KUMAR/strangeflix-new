@@ -148,6 +148,8 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER='kumarvivek282880@gmail.com'
 
 
+
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -157,4 +159,3 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL='home_view'
-
