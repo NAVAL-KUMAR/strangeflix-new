@@ -40,9 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-  
-
+   
     #allauth
 
     #'allauth',
@@ -169,9 +167,9 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL='home_view'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '3373###########'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = 'd82e6821############'  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = '337339********'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '****************************'  # App Secret
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='50623385169-9f#################'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='BxngdAW####################s'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='50623385169-9fbhgjo*****************'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='******************'
 

@@ -1,55 +1,136 @@
-{%extends 'base.html' %}
 
-{%block content %}
-
+{% extends "products/parent.html" %}
 
 
- <br>
-  <div style="text-align:center;border: 0px solid rgb(0,8,90); background-color: #e1d788; border-radius: 10px">
-<h1 style="color: blue;"><b>LOGIN</b></h1>
+{% block body %}
 
-<div style="align-items: center;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="icon" type="image/png" href="https://colorlib.com/etc/lf/Login_v5/images/icons/favicon.ico">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/bootstrap/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/animate/animate.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/css-hamburgers/hamburgers.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/animsition/css/animsition.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/select2/select2.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/vendor/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/css/util.css">
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v5/css/main.css">
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.980.0">
+<div class="limiter">
+<div class="container-login100" style="background-image: url('https://img.freepik.com/free-photo/brown-concrete-textured-wall_53876-94014.jpg?size=626&ext=jpg&ga=GA1.2.1262022279.1603284184');">
+<div style="background-image: url('https://img.freepik.com/free-photo/empty-save-texture-room-light_1258-175.jpg?size=626&ext=jpg&ga=GA1.2.1262022279.1603284184');" class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
+
+<form method="POST" action="{% url 'login' %}" class="login100-form validate-form flex-sb flex-w">
+    {% csrf_token %}
+<span class="login100-form-title p-b-53">
+LOGIN
+</span>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h6 style="color: red;">{{ message }}</h6></li>
     {% endfor %}
+    <br>
 </ul>
 {% endif %}
-<br/>
+<a href="{% url 'social:begin' 'facebook' %}" class="btn-face m-b-20">
+<i class="fa fa-facebook-official"></i>
+Facebook
+</a>
+<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn-google m-b-20">
+<img src="https://colorlib.com/etc/lf/Login_v5/images/icons/icon-google.png" alt="GOOGLE">
+Google
+</a>
 
-<form method="POST" action="{% url 'login' %}" >
-  {% csrf_token %}
-
- <h5 style="color: blue;">Email:</h5>
-  <input style="background-color: coral; width: 90%;" type="text" name='username' placeholder='email' />
-  <br/>
-  <h5 style="color: blue;">Password:</h5>
-  <input style="background-color: coral;width: 90%;" type="password" name="password" placeholder="password" />
-  <br/>
-  <br/>
-  <input class="btn btn-primary" type="submit" value="LOGIN!"/>
-  <br/>
- 
-
- 
-
-
-</form>
-
- <br/>
- <br/>
- <a href="{% url 'social:begin' 'facebook' %}">login with facebook</a>
- <br>
- <a href="{% url 'social:begin' 'google-oauth2' %}">login with google</a>
-  <hr>
-  <a style="color: red;" href="{%url 'reset_password'%}"><b>forgot password click here!</b></a>
-  <br>
-  <br>
-
+<div class="p-t-31 p-b-9">
+<span class="txt1">
+Email
+</span>
+</div>
+<div class="wrap-input100 validate-input" data-validate="Email is required">
+<input class="input100" type="text" name="username">
+<span class="focus-input100"></span>
+</div>
+<div class="p-t-13 p-b-9">
+<span class="txt1">
+Password
+</span>
+<a href="{%url 'reset_password'%}" class="txt2 bo1 m-l-5">
+Forgot?
+</a>
+</div>
+<div class="wrap-input100 validate-input" data-validate="Password is required">
+<input class="input100" type="password" name="password">
+<span class="focus-input100"></span>
 </div>
 
+<div class="container-login100-form-btn m-t-17">
+<button type="submit" class="login100-form-btn">
+Log In
+</button>
+</div>
+
+<div class="w-full text-center p-t-55">
+<span class="txt2">
+Not a member?
+</span>
+<a href="{%url 'signup'%}" class="txt2 bo1">
+Sign up now
+</a>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+<div id="dropDownSelect1"></div>
+
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/animsition/js/animsition.min.js"></script>
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/bootstrap/js/popper.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/select2/select2.min.js"></script>
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/daterangepicker/moment.min.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/daterangepicker/daterangepicker.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v5/vendor/countdowntime/countdowntime.js"></script>
+<script src="https://colorlib.com/etc/lf/Login_v5/js/main.js"></script>
+
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-23581568-13');
+    </script>
 
 
+</body>
+</html>
 {%endblock%}
+
+

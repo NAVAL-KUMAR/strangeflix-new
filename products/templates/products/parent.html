@@ -9,6 +9,7 @@
     <meta name="generator" content="Jekyll v4.0.1">
     <title>{% block title %}{% endblock %} StrangeFlix</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
 
 {% load static %}
  <link rel="stylesheet" href="{% static 'style.css' %}">
@@ -22,12 +23,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 
+
+
   </head>
   <body style="background-color:white;">
     <header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"><h4>STRANGEFLIX</h4></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <a style="color: aqua" class="navbar-brand" href="{% url 'home_view'%}"><h4>STRANGEFLIX</h4></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -36,18 +39,18 @@
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
 
-            <a class="nav-link {% if request.path == '/' %} active {% endif %}" href="/">Home</a>
+            <a style="color: yellow" class="nav-link {% if request.path == '/' %} active {% endif %}" href="/">Home</a>
         </li>
 
          {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link {% if request.path == '/new_video' %} active {% endif %}" href="/new_video">Upload Video</a>
+            <a style="color: brown" class="nav-link {% if request.path == '/new_video' %} active {% endif %}" href="/new_video">Upload Video</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {% if request.path == '/favourite_video' %} active {% endif %}" href="/favourite_video">Favourite</a>
+            <a style="color: brown" class="nav-link {% if request.path == '/favourite_video' %} active {% endif %}" href="/favourite_video">Favourite</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {% if request.path == '/history_video' %} active {% endif %}" href="/history_video">History</a>
+            <a style="color: brown" class="nav-link {% if request.path == '/history_video' %} active {% endif %}" href="/history_video">History</a>
         </li>
         {% endif %}
        {% if user.is_authenticated %}

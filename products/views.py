@@ -114,7 +114,7 @@ def login(request):
             auth.login(request, user)
             return redirect('home')
         else:
-            messages.add_message(request, messages.ERROR, 'username or password is incorrect !')
+            messages.add_message(request, messages.ERROR, 'email or password is incorrect !')
             return render(request, 'products/login.html')
     else:
         return render(request, 'products/login.html')
@@ -371,20 +371,21 @@ def new_video(request):
         play=request.FILES.get('video_filename')
         img=request.FILES.get('video_thumbtail')
         video.type=request.POST.get('video_type')
+        video.category=request.POST.get('video_category')
         url=request.POST.get('video_link')
         if request.POST.get('video_type')!='upload from system' and len(url)==0:
             bvl=True
-            messages.add_message(request,messages.ERROR,'url field cannot be empty')
+            messages.add_message(request,messages.ERROR,'url field cannot be empty !')
         if request.POST.get('video_type')=='upload from system' and play==None:
             bvl=True
-            messages.add_message(request,messages.ERROR,'filename cannot be empty')
+            messages.add_message(request,messages.ERROR,'filename cannot be empty !')
         if img==None:
             bvl=True
-            messages.add_message(request,messages.ERROR,'add a valid thumbtail')
+            messages.add_message(request,messages.ERROR,'add a valid thumbtail !')
         if bvl:
             return redirect('new_video')
 
-        video.category=request.POST.get('video_category')
+        
         video.filename=play
         video.thumbtail=img
         video.link=request.POST.get('video_link')
@@ -425,7 +426,7 @@ def delete_video(request):
         video_to_delete.filename.delete()
         video_to_delete.delete()
         messages.success(request, 'video deleated successfully')
-        return redirect('notification')
+        return redirect('home_view')
 
 
 def ignore_goto_video(request):

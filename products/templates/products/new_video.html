@@ -1,86 +1,230 @@
+
 {% extends "products/parent.html" %}
-
-{% block title %}
-Upload Video
-
-{% endblock %}
-
 
 
 {% block body %}
-{% if messages %}
 
+<html lang="en"><head>
+<title>Contact V5</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/png" href="https://colorlib.com/etc/cf/ContactFrom_v5/images/icons/favicon.ico">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/bootstrap/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/fonts/iconic/css/material-design-iconic-font.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/animate/animate.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/css-hamburgers/hamburgers.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/animsition/css/animsition.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/select2/select2.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/noui/nouislider.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/noui/nouislider.min.css">
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/css/main.css">
+<style>
+  
+
+input[type="file"] {
+ 
+  z-index: -1;
+  top: 6px;
+  left: 0;
+  font-size: 15px;
+  color: rgb(153,153,153);
+}
+</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.980.0" data-new-gr-c-s-loaded="14.980.0">
+  
+<div style="background-image: url('https://images.unsplash.com/photo-1544967082-d9d25d867d66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');" class="container-contact100">
+
+<div style="background-image: url('https://images.unsplash.com/photo-1519810755548-39cd217da494?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');" class="wrap-contact100">
+<form method="POST" action="{% url 'new_video' %}" enctype="multipart/form-data" class="contact100-form validate-form">
+  {% csrf_token %}
+<span style="color: yellow;" class="contact100-form-title">
+Upload Video<br><br>
+<ul class="messages">
     {% for message in messages %}
-     <h2 style="color: green;">  {{ message }}</h2>
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h6 style="color: red;">{{ message }}</h6></li>
     {% endfor %}
+</ul>
+</span>
 
-{% endif %}
-  <div style="padding: 5px 10px;color: black;">
-  <h1 style=" color: rgb(0,100,0);width: 20%">Upload Viedo</h1>
 
-  <form method="POST" action="{% url 'new_video' %}" enctype="multipart/form-data">
+<div class="wrap-input100 validate-input bg1 rs1-wrap-input100 alert-validate" data-validate="Enter the Text">
+<span class="label-input100">Title *</span>
+<input class="input100" type="text" name="video_title" placeholder="Enter the Text">
+<span class="btn-hide-validate"></span></div>
 
-{% csrf_token %}
+<div class="wrap-input100 bg1 rs1-wrap-input100">
+<span class="label-input100">Subtitle</span>
+<input class="input100" type="file" name="video_subtitle" placeholder="add subtitle">
+</div>
 
-<input placeholder="text" type="text" name="video_title">
-<br>
-<br>
-<textarea style="width: 500px;height: 100px" placeholder="description" type="textbox" name="video_description" ></textarea>
-<br>
-<br>
-<select  name="video_type" style="cursor: pointer;padding: 8px 12px;color: #333333;border-radius: 5px;color: aqua">
-	<option disabled selected>video type</option>
-	<option>Youtube link</option>
+
+<div class="wrap-input100 input100-select bg1">
+<span class="label-input100">video Type *</span>
+<div>
+<select class="js-select2 select2-hidden-accessible" name="video_type" tabindex="-1" aria-hidden="true">
+<option disabled selected>video type</option>
+<option>Youtube link</option>
    <option>upload from system</option>
    <option>amazon S3 bucket</option>
    <option>other links</option>
-
 </select>
-<br>
-<br>
+<div class="dropDownSelect2"></div>
+</div>
+</div>
 
 
-<select  name="video_category" style="cursor: pointer;padding: 8px 12px;color: #333333;border-radius: 5px;color: aqua">
-	<option disabled selected>video category</option>
-	<option>song</option>
+<div class="wrap-input100 input100-select bg1">
+<span class="label-input100">video category *</span>
+<div>
+<select name="video_category" class="js-select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+    <option disabled selected>video category</option>
+<option>song</option>
    <option>movie</option>
    <option>trailer</option>
    <option>cartoon</option>
    <option>others</option>
-
 </select>
-<br>
- <br>
-<label for="f01">viedo: </label>
- <input  id="f01" type="file" name="video_filename">
-
- <br>
-  <br>
-<label for="f02">Image: </label>
- <input id="f02" value="thumbnails" type="file" name="video_thumbtail">
- <br>
-  <br>
- <input placeholder="url" type="url" name="video_link">
- <br>
-  <br>
- <input placeholder="subtitle" type="text" name="video_subtitle">
- <br>
-  <br>
-
-<label class="container">
- <span class="checkmark">premium :</span>
-  <input type="checkbox" name="video_premium">
-
-</label>
-
- <br>
- <br>
- <input value="submit" type="submit" style="width: 100px" name="video_submit">
- <br>
- <br>
+<div class="dropDownSelect2"></div>
+</div>
+</div>
 
 
-  </form>
-  </div>
+<div class="wrap-input100 bg1 rs1-wrap-input100">
+<span class="label-input100">Url </span>
+<input class="input100" type="url" name="video_link" placeholder="add url">
+</div>
 
-{% endblock %}
+
+
+<div class="wrap-input100 bg1 rs1-wrap-input100">
+<span class="label-input100">Video </span>
+<input class="input100" type="file" name="video_filename" >
+</div>
+
+<div id="abc" class="wrap-input100 bg1 rs1-wrap-input100">
+<span class="label-input100">Thumnbail *</span>
+<input  class="input100" type="file" name="video_thumbtail" >
+</div>
+
+<div class="wrap-input100 bg1 rs1-wrap-input100">
+<span class="label-input100">Premium</span>
+<input class="input100" type="checkbox" name="video_premium" >
+</div>
+
+<div class="wrap-input100 validate-input bg0 rs1-alert-validate alert-validate" data-validate="Please add Description"><grammarly-extension style="position: absolute; top: -1px; left: -1px; pointer-events: none;" class="_1KJtL"></grammarly-extension>
+<span class="label-input100">Video Description *</span>
+<textarea class="input100" name="video_description" placeholder="Your decdription here..." spellcheck="false"></textarea>
+<span class="btn-hide-validate"></span></div>
+
+
+
+
+
+
+
+
+<button value="submit" type="submit" class="contact100-form-btn" name="video_submit">
+<span>
+Submit
+<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+</span>
+</button>
+
+
+</form>
+</div>
+</div>
+
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/animsition/js/animsition.min.js"></script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/bootstrap/js/popper.js"></script>
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/select2/select2.min.js"></script>
+<script>
+    $(".js-select2").each(function(){
+      $(this).select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $(this).next('.dropDownSelect2')
+      });
+
+
+      $(".js-select2").each(function(){
+        $(this).on('select2:close', function (e){
+          if($(this).val() == "Please chooses") {
+            $('.js-show-service').slideUp();
+          }
+          else {
+            $('.js-show-service').slideUp();
+            $('.js-show-service').slideDown();
+          }
+        });
+      });
+    })
+  </script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/daterangepicker/moment.min.js"></script>
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/daterangepicker/daterangepicker.js"></script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/countdowntime/countdowntime.js"></script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/noui/nouislider.min.js"></script>
+<script>
+      var filterBar = document.getElementById('filter-bar');
+
+      noUiSlider.create(filterBar, {
+          start: [ 1500, 3900 ],
+          connect: true,
+          range: {
+              'min': 1500,
+              'max': 7500
+          }
+      });
+
+      var skipValues = [
+      document.getElementById('value-lower'),
+      document.getElementById('value-upper')
+      ];
+
+      filterBar.noUiSlider.on('update', function( values, handle ) {
+          skipValues[handle].innerHTML = Math.round(values[handle]);
+          $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+          $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+      });
+  </script>
+
+<script src="https://colorlib.com/etc/cf/ContactFrom_v5/js/main.js"></script>
+
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+
+</body><grammarly-extension class="_1KJtL"></grammarly-extension></html>
+
+
+{%endblock%}
+
+
