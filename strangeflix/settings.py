@@ -146,7 +146,7 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='kumarvivek282880@gmail.com'
-EMAIL_HOST_PASSWORD='Sonu@12345'
+
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
@@ -158,8 +158,3 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL='home_view'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '3373394489404630'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = 'd82e6821700d2fc1571c3b3a49c48d34'  # App Secret
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='50623385169-9fbhgjo83k954ijqht6b1bi3ogsrj7mt.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='BxngdAWN_Tcy3_ZGhyJNira8'
