@@ -1,14 +1,14 @@
 
 from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo,SearchView
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from products import views
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', HomeView.as_view()),
+    path('', HomeView.as_view(),name='home_view'),
     path('new_video', views.new_video,name='new_video'),
     path('favourite_video', FavouriteVideo.as_view()),
     path('history_video', HistoryVideo.as_view()),
@@ -18,7 +18,8 @@ urlpatterns = [
     path('ignore_goto_video',views.ignore_goto_video),
     path('ignore_v', views.ignore_v),
     path('comment',views.comment),
-    path('flag',views.flag,name='flag'),
+    path('oauth/', include('social_django.urls', namespace='social')),#social authentication
+    path('add_video_flag',views.add_video_flag),
     path('notification',views.notification,name='notification'),
     path('delete_video',views.delete_video,name='delete_video'),
     path('delete_comment',views.delete_comment),
