@@ -136,7 +136,8 @@ class HomeView(View):
 
     def get(self, request):
         most_recent_videos = Video.objects.order_by('-upload_date')
-        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': most_recent_videos})
+        playlist_list = Playlist.objects.order_by('-upload_date')
+        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': most_recent_videos, 'playlist_list': playlist_list})
 
 
 
@@ -152,6 +153,9 @@ class SearchView(View):
     template_name = 'products/search.html'
     def post(self, request):
         text = self.request.POST.get('search_text')
+        playlist_list = Playlist.objects.filter(title__contains = text)
+        playlist_list = (playlist_list |Playlist.objects.filter(description__contains=text))
+        print(playlist_list)
         q1 = Video.objects.filter(title__contains = text)
         q2 = Video.objects.filter(category__contains = text)
         q4 = Video.objects.filter(description__contains=text)
@@ -163,7 +167,7 @@ class SearchView(View):
         print(q2)
         print(q3)
         q2 = (q1 | q2 | q3 | q4).distinct()
-        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': q2})
+        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': q2 , 'playlist':playlist_list })
 
 
 class FavouriteVideo(View):

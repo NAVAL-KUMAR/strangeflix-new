@@ -11,14 +11,14 @@ Video -
 
 <div class="container-fluid">
     <div class="row">
-        <div  class="form-group col-sm-9">
-            <div  id = "video_player_box" class="row my-2" style="cursor:pointer;width:100%;height:720px;position:relative; ">
+        <div  class="form-group col-md-9">
+            <div  id = "video_player_box" class="row my-1" style="cursor:pointer;width:100%;height: calc((8 / 16) * 100vw);max-height: calc(100vh - 169px);position:relative;">
 
                 {% if video.type != "upload from system" %}
                     <iframe width="100%" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 {% else %}
-                <div id = "video_box" class="row">
-                    <video id="my_video" autoplay style="position: absolute;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail.url}}">
+                <div id = "video_box" class="row ">
+                    <video id="my_video" autoplay style="position: absolute;left:15px;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail.url}}">
                  <source src= "{{video.filename.url}}" type="video/mp4">
                      Your browser does not support the video tag.
                     </video>
@@ -29,28 +29,30 @@ Video -
 
 
                 <div id = "video_control_bar" class="mx-5" style="z-index: 9;width:100%;position:absolute;bottom:0px"  >
-                    <div id = "video_control" class="row" >
-                        <div class="col-sm-3">
+                    <div id = "video_control" class="row justify-content-center" >
+                        <div class="col-md-3">
                             <div class="row justify-content-center" >
-                                <svg id = "backward10"   xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 171 171" ><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,171.99818v-171.99818h171.99818v171.99818z" fill="none"></path><g fill="#ffffff"><path d="M74.8125,110.4375h-10.6875v-36.69375l-10.6875,4.63125v-8.90625l20.30625,-8.90625h1.06875zM117.5625,89.775c0,6.4125 -1.425,11.75625 -4.63125,15.31875c-3.20625,3.5625 -7.48125,5.34375 -13.18125,5.34375c-5.7,0 -9.975,-1.78125 -13.18125,-5.34375c-3.20625,-3.5625 -4.63125,-8.55 -4.63125,-15.31875v-8.90625c0,-6.4125 1.425,-11.75625 4.63125,-15.31875c3.20625,-3.5625 7.48125,-5.34375 13.18125,-5.34375c5.7,0 9.975,1.78125 13.18125,5.34375c3.20625,3.5625 4.63125,8.55 4.63125,15.31875zM106.875,79.0875c0,-3.91875 -0.7125,-6.76875 -1.78125,-8.55c-1.06875,-1.78125 -2.85,-2.85 -5.34375,-2.85c-2.49375,0 -4.275,0.7125 -5.34375,2.49375c-1.06875,1.78125 -1.78125,4.63125 -1.78125,8.19375v13.5375c0,3.91875 0.7125,6.76875 1.78125,8.55c1.06875,1.78125 2.85,2.85 5.34375,2.85c2.49375,0 4.275,-1.06875 5.34375,-2.85c1.06875,-1.78125 1.78125,-4.63125 1.78125,-8.55v-12.825z"></path><path d="M85.5,42.75l-28.5,-21.375l28.5,-21.375z"></path><path d="M85.5,156.75c-39.1875,0 -71.25,-32.0625 -71.25,-71.25c0,-16.74375 6.05625,-33.13125 17.1,-45.95625l10.6875,9.2625c-8.90625,9.975 -13.5375,23.15625 -13.5375,36.69375c0,31.35 25.65,57 57,57c31.35,0 57,-25.65 57,-57c0,-31.35 -25.65,-57 -57,-57h-11.4v-14.25h11.4c39.1875,0 71.25,32.0625 71.25,71.25c0,39.1875 -32.0625,71.25 -71.25,71.25z"></path></g></g></svg>
-                                 <i  id="next" class="fa fa-step-backward"  aria-hidden="true"></i>
-                                 <i id = "playpausebtn"  class="fa fa-pause"  aria-hidden="true"></i>
-                                 <i id = "previous" class="fa fa-step-forward"  aria-hidden="true"></i>
-                                <svg id = "forward10"   xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 171 171" ><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,171.99818v-171.99818h171.99818v171.99818z" fill="none"></path><g fill="#ffffff"><path d="M74.8125,110.4375h-10.6875v-36.69375l-10.6875,4.63125v-8.90625l20.30625,-8.90625h1.06875zM117.5625,89.775c0,6.4125 -1.425,11.75625 -4.63125,15.31875c-3.20625,3.5625 -7.48125,5.34375 -13.18125,5.34375c-5.7,0 -9.975,-1.78125 -13.18125,-5.34375c-3.20625,-3.5625 -4.63125,-8.55 -4.63125,-15.31875v-8.90625c0,-6.4125 1.425,-11.75625 4.63125,-15.31875c3.20625,-3.5625 7.48125,-5.34375 13.18125,-5.34375c5.7,0 9.975,1.78125 13.18125,5.34375c3.20625,3.5625 4.63125,8.55 4.63125,15.31875zM106.875,79.0875c0,-3.91875 -0.7125,-6.76875 -1.78125,-8.55c-1.06875,-1.78125 -2.85,-2.85 -5.34375,-2.85c-2.49375,0 -4.275,0.7125 -5.34375,2.49375c-1.06875,1.78125 -1.78125,4.63125 -1.78125,8.19375v13.5375c0,3.91875 0.7125,6.76875 1.78125,8.55c1.06875,1.78125 2.85,2.85 5.34375,2.85c2.49375,0 4.275,-1.06875 5.34375,-2.85c1.06875,-1.78125 1.78125,-4.63125 1.78125,-8.55v-12.825z"></path><path d="M85.5,42.75l28.5,-21.375l-28.5,-21.375z"></path><path d="M85.5,156.75c-39.1875,0 -71.25,-32.0625 -71.25,-71.25c0,-39.1875 32.0625,-71.25 71.25,-71.25h11.4v14.25h-11.4c-31.35,0 -57,25.65 -57,57c0,31.35 25.65,57 57,57c31.35,0 57,-25.65 57,-57c0,-13.5375 -4.63125,-26.71875 -13.5375,-37.05l10.6875,-9.2625c11.04375,13.18125 17.1,29.56875 17.1,46.3125c0,39.1875 -32.0625,71.25 -71.25,71.25z"></path></g></g></svg>
+
+                                <tr>
+                                <td><svg id = "backward10"   xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 171 171" ><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,171.99818v-171.99818h171.99818v171.99818z" fill="none"></path><g fill="#ffffff"><path d="M74.8125,110.4375h-10.6875v-36.69375l-10.6875,4.63125v-8.90625l20.30625,-8.90625h1.06875zM117.5625,89.775c0,6.4125 -1.425,11.75625 -4.63125,15.31875c-3.20625,3.5625 -7.48125,5.34375 -13.18125,5.34375c-5.7,0 -9.975,-1.78125 -13.18125,-5.34375c-3.20625,-3.5625 -4.63125,-8.55 -4.63125,-15.31875v-8.90625c0,-6.4125 1.425,-11.75625 4.63125,-15.31875c3.20625,-3.5625 7.48125,-5.34375 13.18125,-5.34375c5.7,0 9.975,1.78125 13.18125,5.34375c3.20625,3.5625 4.63125,8.55 4.63125,15.31875zM106.875,79.0875c0,-3.91875 -0.7125,-6.76875 -1.78125,-8.55c-1.06875,-1.78125 -2.85,-2.85 -5.34375,-2.85c-2.49375,0 -4.275,0.7125 -5.34375,2.49375c-1.06875,1.78125 -1.78125,4.63125 -1.78125,8.19375v13.5375c0,3.91875 0.7125,6.76875 1.78125,8.55c1.06875,1.78125 2.85,2.85 5.34375,2.85c2.49375,0 4.275,-1.06875 5.34375,-2.85c1.06875,-1.78125 1.78125,-4.63125 1.78125,-8.55v-12.825z"></path><path d="M85.5,42.75l-28.5,-21.375l28.5,-21.375z"></path><path d="M85.5,156.75c-39.1875,0 -71.25,-32.0625 -71.25,-71.25c0,-16.74375 6.05625,-33.13125 17.1,-45.95625l10.6875,9.2625c-8.90625,9.975 -13.5375,23.15625 -13.5375,36.69375c0,31.35 25.65,57 57,57c31.35,0 57,-25.65 57,-57c0,-31.35 -25.65,-57 -57,-57h-11.4v-14.25h11.4c39.1875,0 71.25,32.0625 71.25,71.25c0,39.1875 -32.0625,71.25 -71.25,71.25z"></path></g></g></svg></td>
+                                 <td><i  id="next" class="fa fa-step-backward"  aria-hidden="true"></i></td>
+                                 <td><i id = "playpausebtn"  class="fa fa-pause"  aria-hidden="true"></i></td>
+                                 <td><i id = "previous" class="fa fa-step-forward"  aria-hidden="true"></i></td>
+                                <td><svg id = "forward10"   xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 171 171" ><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,171.99818v-171.99818h171.99818v171.99818z" fill="none"></path><g fill="#ffffff"><path d="M74.8125,110.4375h-10.6875v-36.69375l-10.6875,4.63125v-8.90625l20.30625,-8.90625h1.06875zM117.5625,89.775c0,6.4125 -1.425,11.75625 -4.63125,15.31875c-3.20625,3.5625 -7.48125,5.34375 -13.18125,5.34375c-5.7,0 -9.975,-1.78125 -13.18125,-5.34375c-3.20625,-3.5625 -4.63125,-8.55 -4.63125,-15.31875v-8.90625c0,-6.4125 1.425,-11.75625 4.63125,-15.31875c3.20625,-3.5625 7.48125,-5.34375 13.18125,-5.34375c5.7,0 9.975,1.78125 13.18125,5.34375c3.20625,3.5625 4.63125,8.55 4.63125,15.31875zM106.875,79.0875c0,-3.91875 -0.7125,-6.76875 -1.78125,-8.55c-1.06875,-1.78125 -2.85,-2.85 -5.34375,-2.85c-2.49375,0 -4.275,0.7125 -5.34375,2.49375c-1.06875,1.78125 -1.78125,4.63125 -1.78125,8.19375v13.5375c0,3.91875 0.7125,6.76875 1.78125,8.55c1.06875,1.78125 2.85,2.85 5.34375,2.85c2.49375,0 4.275,-1.06875 5.34375,-2.85c1.06875,-1.78125 1.78125,-4.63125 1.78125,-8.55v-12.825z"></path><path d="M85.5,42.75l28.5,-21.375l-28.5,-21.375z"></path><path d="M85.5,156.75c-39.1875,0 -71.25,-32.0625 -71.25,-71.25c0,-39.1875 32.0625,-71.25 71.25,-71.25h11.4v14.25h-11.4c-31.35,0 -57,25.65 -57,57c0,31.35 25.65,57 57,57c31.35,0 57,-25.65 57,-57c0,-13.5375 -4.63125,-26.71875 -13.5375,-37.05l10.6875,-9.2625c11.04375,13.18125 17.1,29.56875 17.1,46.3125c0,39.1875 -32.0625,71.25 -71.25,71.25z"></path></g></g></svg></td></tr>
 
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <div class="row justify-content-center"  >
                                  <form  class="range-field" style="color:white;margin:15px;" >
                                      <span id ="curtimetext" >00:00  </span>
-                                        <input  id ="seekslider"  style="width:300px;" type="range" min="0" max="100" step = "1" value="0"/>
+                                        <input  id ="seekslider"  style="width:250px;" type="range" min="0" max="100" step = "1" value="0"/>
                                      <span id = "durtimetext" >  00:00</span>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <div class="row justify-content-center " >
+                        <div class="col-md-3">
+                            <div class="row justify-content-center" >
                                 <i id = "mutebtn" class="fa fa-volume-up"   aria-hidden="true"></i>
                                  <form class="range-field" style="color:white;margin:15px;">
                                     <input  id ="volumeslider" style="width:100px;" type="range" min="0" max="100" step = "1" value="100"/>
@@ -287,8 +289,8 @@ Video -
             </div>
         </div>
         </div>
-        <div class="col-sm-3">
-            <div  id = "show_video" class="row justify-content-md-center">
+        <div class="col-md-3">
+            <div  id = "show_video" class="row justify-content-center">
 
               {% for video_ in most_recent_videos %}
                     {% if video_ != video %}

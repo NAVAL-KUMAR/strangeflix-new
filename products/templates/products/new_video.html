@@ -12,7 +12,6 @@
 
 <link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/vendor/bootstrap/css/bootstrap.min.css">
 
-
 <link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 
 <link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/cf/ContactFrom_v5/fonts/iconic/css/material-design-iconic-font.min.css">
@@ -54,26 +53,23 @@ input[type="file"] {
 <span style="color: yellow;" class="contact100-form-title">
 Upload Video<br><br>
 <ul class="messages">
-
-
     {% for message in messages %}
-     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h6 style="color: red;">{{ message }}</h6></li>
-
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h6 style="color: red;">{{ message }}</h6></li>
     {% endfor %}
-
-    </ul>
+</ul>
 </span>
 
-   <div class="wrap-input100 validate-input bg1 rs1-wrap-input100 alert-validate" data-validate="Enter the Text">
+
+<div class="wrap-input100 validate-input bg1 rs1-wrap-input100 alert-validate" data-validate="Enter the Text">
 <span class="label-input100">Title *</span>
 <input class="input100" type="text" name="video_title" placeholder="Enter the Text">
 <span class="btn-hide-validate"></span></div>
-
 
 <div class="wrap-input100 bg1 rs1-wrap-input100">
 <span class="label-input100">Subtitle</span>
 <input class="input100" type="file" name="video_subtitle" placeholder="add subtitle">
 </div>
+
 
 <div class="wrap-input100 input100-select bg1">
 <span class="label-input100">video Type *</span>
@@ -84,10 +80,11 @@ Upload Video<br><br>
    <option>upload from system</option>
    <option>amazon S3 bucket</option>
    <option>other links</option>
-
+</select>
 <div class="dropDownSelect2"></div>
 </div>
 </div>
+
 
 <div class="wrap-input100 input100-select bg1">
 <span class="label-input100">video category *</span>
@@ -100,8 +97,7 @@ Upload Video<br><br>
    <option>cartoon</option>
    <option>others</option>
 </select>
-
-    <div class="dropDownSelect2"></div>
+<div class="dropDownSelect2"></div>
 </div>
 </div>
 
@@ -132,6 +128,11 @@ Upload Video<br><br>
 <span class="label-input100">Video Description *</span>
 <textarea class="input100" name="video_description" placeholder="Your decdription here..." spellcheck="false"></textarea>
 <span class="btn-hide-validate"></span></div>
+
+
+
+
+
 
 
 
@@ -224,4 +225,3 @@ Submit
 
 
 {%endblock%}
-
