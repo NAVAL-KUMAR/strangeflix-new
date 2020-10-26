@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite, History, Tag, Flag, Playlist, playlist_video
+from .models import Video, Comment, Like, Favourite, History, Tag, Flag, Playlist, playlist_video,payPerView
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -25,7 +25,13 @@ from django.core.exceptions import ObjectDoesNotExist
 import random
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.csrf import csrf_exempt
+
+from . import Checksum
+
+MERCHANT_KEY ='MbpKwGbDzxR#s5Rs';
 
 def home(request):
     return render(request, 'products/home.html');
@@ -192,108 +198,115 @@ class HistoryVideo(View):
 
 #View to view Video
 
-class VideoView(View):
-    template_name = 'products/video.html'
+@login_required(login_url="/login")
+def video_view(request,id,id1):
+    if id1 == 0:
 
-    def get(self, request, id, id1):
-
-        if id1 == 0:
-
-            next_video = []
-            next_v = Video.objects.filter(id__gt=id).order_by('upload_date')
-            for x in next_v:
-                next_video.append(x)
-            next_v = Video.objects.filter(id__lte=id).order_by('upload_date')
-            for x in next_v:
-                next_video.append(x)
-            context = {'next_video' : next_video[0].id}
-
-            previous_video = []
-            previous_v = Video.objects.filter(id__lt=id).order_by('-upload_date')
-            for x in previous_v:
-                previous_video.append(x)
-            previous_v = Video.objects.filter(id__gte=id).order_by('-upload_date')
-            for x in previous_v:
-                previous_video.append(x)
-            context['previous_video'] = previous_video[0].id
-            context['most_recent_videos'] = next_video
-        else:
-            playlist = playlist_video.objects.filter(playlist_id = id1).order_by('video_id')
-            next_video = []
-            for x in playlist:
-                v = Video.objects.get(id=x.video_id)
-                next_video.append(v)
-
-            if id == 0:
-                id = next_video[0].id
-                next_video.append(next_video[0])
-                next_video.pop(0)
+        next_video = []
+        vid = Video.objects.get(pk=id)
+        if vid.premium:
+            usr = request.user
+            payperview = payPerView.objects.filter(user=usr).filter(status='TXN_SUCCESS').order_by('-startdate')
+            if len(payperview) > 0:
+                print(payperview[0].status)
+                if payperview[0].enddate < timezone.now():
+                    return redirect('make_payment')
             else:
-                st = []
-                while next_video[0].id != id:
-                    st.append(next_video[0])
-                    next_video.pop(0)
+                return redirect('make_payment')
+        next_v = Video.objects.filter(id__gt=id).order_by('upload_date')
+        for x in next_v:
+            next_video.append(x)
+        next_v = Video.objects.filter(id__lte=id).order_by('upload_date')
+        for x in next_v:
+            next_video.append(x)
+        context = {'next_video': next_video[0].id}
+
+        previous_video = []
+        previous_v = Video.objects.filter(id__lt=id).order_by('-upload_date')
+        for x in previous_v:
+            previous_video.append(x)
+        previous_v = Video.objects.filter(id__gte=id).order_by('-upload_date')
+        for x in previous_v:
+            previous_video.append(x)
+        context['previous_video'] = previous_video[0].id
+        context['most_recent_videos'] = next_video
+    else:
+        playlist = playlist_video.objects.filter(playlist_id=id1).order_by('video_id')
+        next_video = []
+        for x in playlist:
+            v = Video.objects.get(id=x.video_id)
+            next_video.append(v)
+
+        if id == 0:
+            id = next_video[0].id
+            next_video.append(next_video[0])
+            next_video.pop(0)
+        else:
+            st = []
+            while next_video[0].id != id:
                 st.append(next_video[0])
                 next_video.pop(0)
-                for x in st:
-                    next_video.append(x)
-                print(next_video)
-            context = {'next_video': next_video[0].id}
-            if len(next_video)==1:
-                context['previous_video'] = next_video[0].id
+            st.append(next_video[0])
+            next_video.pop(0)
+            for x in st:
+                next_video.append(x)
+            print(next_video)
+        context = {'next_video': next_video[0].id}
+        if len(next_video) == 1:
+            context['previous_video'] = next_video[0].id
+        else:
+            context['previous_video'] = next_video[len(next_video) - 2].id
+        context['most_recent_videos'] = next_video
+
+    video_by_id = get_object_or_404(Video, pk=id)
+    video_by_id.views = video_by_id.views + 1
+    video_by_id.save()
+
+    context['video'] = video_by_id
+    comments = Comment.objects.filter(video__id=id).order_by('-datetime')
+    context['comments'] = comments
+    video = Video.objects.get(id=id)
+    tag = Tag.objects.filter(video=id)
+    context['tag'] = tag
+
+    try:
+        go = Like.objects.get(video_id=id, user=request.user)
+    except ObjectDoesNotExist:
+        liked_now = Like(like=0, user=request.user, video=video)
+        liked_now.save()
+        go = Like.objects.get(video_id=id, user=request.user)
+
+    try:
+        fav = Favourite.objects.get(video_id=id, user=request.user)
+    except ObjectDoesNotExist:
+        fav_add = Favourite(user=request.user, video=video)
+        fav_add.save()
+        fav = Favourite.objects.get(video=video, user=request.user)
+
+    try:
+        history = History.objects.get(video_id=id, user=request.user)
+        history.dateTime = datetime.now()
+        if history.duration_time - history.pause_time < 5.0:
+            if history.duration_time > history.pause_time:
+                history.pause_time = 0
             else:
-                context['previous_video'] = next_video[len(next_video)-2].id
-            context['most_recent_videos'] = next_video
+                history.pause_time = 0
+                history.duration_time = 1
 
-        video_by_id = get_object_or_404(Video, pk=id)
-        video_by_id.views = video_by_id.views + 1
-        video_by_id.save()
+        history.save()
+    except ObjectDoesNotExist:
+        add_history = History(user=request.user, video=video)
+        add_history.save()
+        history = History.objects.get(video=video, user=request.user)
 
-        context['video'] = video_by_id
-        comments = Comment.objects.filter(video__id=id).order_by('-datetime')
-        context['comments'] = comments
-        video = Video.objects.get(id=id)
-        tag = Tag.objects.filter(video=id)
-        context['tag'] = tag
+    context['history'] = history
+    context['like_dislike'] = go
+    context['fav'] = fav
+    context['playlist_id'] = id1
 
-        try:
-            go = Like.objects.get(video_id=id, user=request.user)
-        except ObjectDoesNotExist:
-            liked_now = Like(like=0, user=request.user, video=video)
-            liked_now.save()
-            go = Like.objects.get(video_id=id, user=request.user)
+    print(context)
 
-        try:
-            fav = Favourite.objects.get(video_id=id, user=request.user)
-        except ObjectDoesNotExist:
-            fav_add = Favourite(user=request.user, video=video)
-            fav_add.save()
-            fav = Favourite.objects.get(video=video, user=request.user)
-
-        try:
-            history = History.objects.get(video_id=id, user=request.user)
-            history.dateTime = datetime.now()
-            if history.duration_time - history.pause_time < 5.0:
-                if history.duration_time > history.pause_time:
-                    history.pause_time = 0
-                else:
-                    history.pause_time = 0
-                    history.duration_time = 1
-
-            history.save()
-        except ObjectDoesNotExist:
-            add_history = History(user=request.user, video=video)
-            add_history.save()
-            history = History.objects.get(video=video, user=request.user)
-
-        context['history'] = history
-        context['like_dislike'] = go
-        context['fav'] = fav
-        context['playlist_id'] = id1
-
-        print(context)
-
-        return render(request, self.template_name, context)
+    return render(request,'products/video.html', context)
 
 
 def comment(request):
@@ -502,7 +515,7 @@ def save_video_time(request):
         history.pause_time = time
         history.duration_time = end
         history.save()
-        return JsonResponse({'TEXT':"sAVED"})
+        return JsonResponse({'TEXT':"SAVED"})
 
 def add_comment_flag(request):
     if request.method == 'GET':
@@ -587,4 +600,78 @@ def add_to_playlist(request):
             pv.save()
         pv = playlist_video.objects.filter(playlist = playlist)
         return JsonResponse({"pv":list(pv.values())})
+
+
+def make_payment(request):
+    if request.method == 'POST':
+        type = request.POST.get('subcription')
+        email = request.user.email
+        print(type)
+        amount = 1
+        if (type == 'Y'):
+            amount = 129
+        elif (type == 'M'):
+            amount = 1500
+
+        param_dict = {
+            'MID': 'TrQkAe12345378628123',
+            'ORDER_ID': str(request.user.id),
+            'TXN_AMOUNT': str(amount),
+            'CUST_ID': email,
+            'INDUSTRY_TYPE_ID': 'Retail',
+            'WEBSITE': 'WEBSTAGING',
+            'CHANNEL_ID': 'WEB',
+            'CALLBACK_URL': 'http://localhost:8000/handlerequest/',
+        }
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+
+        return render(request, 'products/paytm.html', {'param_dict': param_dict})
+    else:
+        return render(request, 'products/make_payment.html')
+
+
+@csrf_exempt
+def handlerequest(request):
+    form = request.POST
+    response_dict = {}
+    for i in form.keys():
+        response_dict[i] = form[i]
+        '''
+        if i== 'CHECKSUMHASH':
+            checksum=form[i]
+
+    verify=Checksum.verify_checksum(response_dict,MERCHANT_KEY,checksum)
+    if verify:
+        if response_dict['RESPCODE']=='01':
+            print('payment sucessfull')
+        else:
+            print('payment unsucessull because '+ response_dict['RESPMSG'])
+            '''
+    print('payment status is ' + response_dict['TXNAMOUNT'])
+    # reaponse_dict['STATUS'] ('TXN_SUCCESS','TXN_FAILURE')
+    payperview = payPerView()
+    usr = User.objects.get(id=response_dict['ORDERID'])
+    payperview.user = usr
+    payperview.startdate = timezone.now()
+    payperview.status = response_dict['STATUS']
+    if response_dict['RESPCODE'] == '01':
+        amount = response_dict['TXNAMOUNT']
+        if amount == '129':
+            payperview.enddate = timezone.now() + datetime.timedelta(days=30)
+            payperview.type = 'Monthly'
+        elif amount == '1500':
+            payperview.enddate = timezone.now() + datetime.timedelta(days=365)
+            payperview.type = 'Yearly'
+    else:
+        payperview.enddate = timezone.now()
+        payperview.type = 'None'
+    payperview.save()
+
+    return render(request, 'products/paymentstatus.html', {'response': response_dict})
+
+
+def user_payment(request):
+    payperview = payPerView.objects.filter(user=request.user).order_by('-startdate').all()
+    return render(request, 'products/user_payment.html', {'info': payperview})
+
 

@@ -14,6 +14,10 @@
  <link rel="stylesheet" href="{% static 'style.css' %}">
       <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+
+  <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+  <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -62,7 +66,7 @@
                 <a style="color: brown" class="nav-link {% if request.path == '/history_video' %} active {% endif %}" href="/history_video">History</a>
           </li>
 
-        <a class="nav-link" href="#" style="color: grey">{{request.user|slice:":8"}}<span class="sr-only">(current)</span></a>
+         <a class="nav-link" href="{%url 'user_payment'%}" style="color: grey">{{request.user|slice:":8"}}<span class="sr-only">(current)</span></a>
          </li>
           <li class="nav-item active">
 

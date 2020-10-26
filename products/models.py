@@ -93,3 +93,13 @@ class playlist_video(models.Model):
 
     def date_prety(self):
         return self.datetime.strftime('%d-%m-%Y %H:%M:%S')
+
+class payPerView(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    startdate = models.DateTimeField()
+    enddate = models.DateTimeField()
+    status = models.CharField(max_length=20)
+    type = models.CharField(max_length=10)
+
+    def __str__(self):
+        return str(self.user) + str("/") + str(self.enddate) + str('/') + self.status

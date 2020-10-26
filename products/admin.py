@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment,Video,Like,Favourite,History,Tag,Flag,playlist_video,Playlist
+from .models import Comment,Video,Like,Favourite,History,Tag,Flag,playlist_video,Playlist,payPerView
 # Register your models here.
 
 admin.site.register(Video)
@@ -11,3 +11,4 @@ admin.site.register(Tag)
 admin.site.register(Flag)
 admin.site.register(Playlist)
 admin.site.register(playlist_video)
+admin.site.register(payPerView)

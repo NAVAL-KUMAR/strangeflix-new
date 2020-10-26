@@ -1,5 +1,5 @@
 
-from products.views import HomeView, VideoView,FavouriteVideo,HistoryVideo,SearchView,PlaylistView
+from products.views import HomeView,FavouriteVideo,HistoryVideo,SearchView,PlaylistView
 from django.contrib import admin
 from django.urls import path
 from products import views
@@ -14,7 +14,7 @@ urlpatterns = [
     path('create_playlist', views.create_playlist,name='create_playlist'),
     path('favourite_video', FavouriteVideo.as_view()),
     path('history_video', HistoryVideo.as_view()),
-    path('video/<int:id>/<int:id1>', VideoView.as_view()),
+    path('video/<int:id>/<int:id1>',views.video_view,name='vodeo_view'),
     path('search/', SearchView.as_view(),name='search'),
     path('playlist/', PlaylistView.as_view(),name='playlist'),
     path('add_tag',views.add_tag,name='add_tag'),
@@ -39,6 +39,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
+
+    path('make_payment/',views.make_payment,name='make_payment'),
+    path('user_payment',views.user_payment,name='user_payment'),
+    path('handlerequest/',views.handlerequest,name='handlerequest'),
 
     path('activate/<uidb64>/<token>', views.ActivateAccountView.as_view(), name='activate'),
     path('logout', views.logout, name='logout'),

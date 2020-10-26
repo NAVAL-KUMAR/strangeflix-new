@@ -1,0 +1,24 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+payment status
+
+{% endblock %}
+
+
+
+{% block body %}
+<h1>PAYMENT STATUS</h1>
+
+<div style="background-color: grey;">
+
+	{% for obj in info%}
+      <h3>{{obj.startdate}}</h3>
+      <h3>{{obj.status}}</h3>
+      <h3>Type  - {{obj.type}}</h3>
+      <div style="background-color: white;height: 10px;"></div>
+	{%endfor%}
+
+</div>
+
+{% endblock %}

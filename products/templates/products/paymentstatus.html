@@ -1,0 +1,19 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+payment status
+
+{% endblock %}
+
+
+
+{% block body %}
+{{response}}
+<h1>patment status regarding your order id {{response.ORDERID}}</h1>
+{%if response.RESPCODE == '01' %}
+order sucesss
+{%else%}
+order fail
+{%endif%}
+
+{% endblock %}
