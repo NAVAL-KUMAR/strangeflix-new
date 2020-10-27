@@ -9,6 +9,8 @@ payment status
 
 {% block body %}
 <h2 style="font: 2rem monospace; color: brown;" align="center">ALL PAYMENT STATUS</h2>
+<div align="center"><button  style="color: black; border-radius: 5px;"><a  href="{%url 'make_payment'%}">get subcription</a></button></div>
+<br>
 {% for obj in info%}
 <div {% if obj.status == "TXN_SUCCESS" %}
 style="background-color: green;border-radius: 8px;"

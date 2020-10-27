@@ -18,7 +18,7 @@ Video -
                     <iframe width="100%" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 {% else %}
                 <div id = "video_box" class="row ">
-                    <video id="my_video" autoplay style="position: absolute;left:15px;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail.url}}">
+                    <video id="my_video" autoplay style="position: absolute;left:15px;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail}}">
                  <source src= "{{video.filename.url}}" type="video/mp4">
                         {% if video.subtitle.url != null %}
                         <track  src="{{ video.subtitle.url }}" label="English" kind="subtitles" srclang="en" default>
@@ -282,9 +282,9 @@ Video -
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
-                                    <input type="text" class="form-control" id="comment"  placeholder="Add Comment">
+                                    <input style="width: 150%;" type="text" class="form-control" id="comment"  placeholder="Add Comment">
                                     </div>
-                                    <div class="col justify-content-end">
+                                    <div  class="col justify-content-end">
                                          <button type="submit" class="fa fa-paper-plane my-2" style="font-size:35px;color:green;background:none;border:none;"></button>
                                       </div>
                                 </div>
@@ -381,7 +381,7 @@ Video -
                     <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
                          {% load static %}
                       <a href='/video/{{ video_.id }}/{{ playlist_id }}'>
-                      <img src="{{video_.thumbtail.url}}" class="card-img-top" alt="No Video Present">
+                      <img src="{{video_.thumbtail}}" class="card-img-top" alt="No Video Present">
                       </a>
                           <p class = "mx-3 my-3"><strong class="font-italic">{{ video_.title }}</strong><br><small class="text-muted" >Uploaded by {{ video_.user }} on {{ video_.upload_date }}</small></p>
                     </div>

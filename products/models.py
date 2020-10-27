@@ -12,9 +12,9 @@ class Video(models.Model):
     type = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
     filename = models.FileField(upload_to='', blank=True)
-    thumbtail = models.ImageField(upload_to='', blank=True)
-    link = models.URLField(max_length=200, blank=True)
-    subtitle = models.FileField(upload_to='', blank=True)
+    thumbtail = models.URLField(max_length=20000, blank=True)
+    link = models.URLField(max_length=20000, blank=True)
+    subtitle = models.URLField(max_length=20000, blank=True)
     premium = models.BooleanField(default=False)
 
     class Meta:
