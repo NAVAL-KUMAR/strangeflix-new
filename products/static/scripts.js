@@ -44,6 +44,7 @@ function playPause(){
         vid.play();
         playbtn.className='fa fa-pause';
     }else{
+        console.log(vid);
         vid.pause();
         playbtn.className='fa fa-play';
     }
@@ -130,6 +131,5 @@ function playback0_5speed(){
 function playback0_25speed(){
     vid.playbackRate = 0.25;
 }
-
 
 

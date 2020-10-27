@@ -15,7 +15,7 @@ class Video(models.Model):
     thumbtail = models.ImageField(upload_to='', blank=True)
     link = models.URLField(max_length=200, blank=True)
     subtitle = models.FileField(upload_to='', blank=True)
-    premium = models.BooleanField()
+    premium = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-upload_date',)
@@ -26,6 +26,7 @@ class Video(models.Model):
         return self.datetime.strftime('%d-%m-%Y %H:%M:%S')
 
 class Comment(models.Model):
+    name = models.CharField(max_length = 50)
     text = models.TextField(max_length=300)
     datetime = models.DateTimeField(auto_now=True, blank=False, null=False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -83,7 +84,6 @@ class Playlist(models.Model):
     description = models.TextField(max_length=300, null=True,blank=True)
     thumbtail = models.ImageField(upload_to='', blank=True)
     upload_date = models.DateTimeField(auto_now=True, blank=False, null=False)
-    premium = models.BooleanField()
 
 class playlist_video(models.Model):
     name = models.CharField(max_length=50)

@@ -10,6 +10,69 @@ Upload Video
 {% block body %}
 <div class="container">
     {% if new_playlist == False %}
+     <div class="shadow-lg card my-4">
+            <div class="card-header">
+                  <div class="float-center"><h1>Modify Playlist</h1></div>
+
+            </div>
+                    <div class="row my-4 justify-content-center ">
+                        <div id="playlist_select" class="col-sm-4">
+                     <select  id ="playlist_option" class="custom-select">
+                         {%for playlist in playlist %}
+                         <option value="{{ playlist.id }}">{{ playlist.id }} {{playlist.title}}  [ {{ playlist.upload_date }} ]</option>
+                         {% endfor %}
+                     </select>
+                    </div>
+                        <div class="col-sm-2">
+                     <button id = "modify_playlist" class="btn btn-primary" type="button" >Modify Playlist</button>
+                     </div>
+                    <div class="col-sm-2">
+                     <button id = "delete_playlist" class="btn btn-danger" type="button" >Delete Playlist</button>
+                     </div>
+                </div>
+            <div class="row justify-content-center">
+                 <hr style="width:50%;">
+            </div>
+                 <div class="row my-4 justify-content-center">
+                 <span>OR</span>
+            </div>
+     </div>
+
+    <script >
+        $(document).ready(function () {
+            $("#delete_playlist").click(function () {
+                var txt = $("#playlist_select").find(":selected").val();
+                $.ajax({
+              type: "GET",
+              url: "/delete_playlist",
+              data: {
+                    playlist_id : txt
+              },
+              success: function (response) {
+
+                  $('#playlist_option').empty();
+                  for(var key in response.pv){
+                        $('#playlist_option').append('<option value="'+response.pv[key].id+'">'+response.pv[key].id+" "+response.pv[key].title+" "+response.pv[key].upload_date+'</option>');
+                  }
+
+                 }
+            });
+            return false;
+            });
+        });
+
+        $("#modify_playlist").click(function(){
+            var txt = $("#playlist_select").find(":selected").val();
+                 if (typeof txt === "undefined") {
+                    window.location.href ='';
+                  }else{
+
+                 window.location.href ='modify_playlist/'+txt;
+                 }
+        });
+    </script>
+
+
         <div class="shadow-lg card my-4">
             <div class="card-header">
                 <div class="float-center"><h1>Upload Playlist</h1></div>
@@ -35,13 +98,6 @@ Upload Video
                                         <label  class="col-sm-2 col-form-label">Thumbnail</label>
                                         <div class="col-sm-10">
                                             <input id="f02" required value="thumbnails" type="file" name="playlist_thumbtail">
-                                        </div>
-                                      </div>
-
-                                        <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Premium</label>
-                                        <div class="col-sm-10">
-                                            <input type="checkbox" required name="playlist_premium">
                                         </div>
                                       </div>
                                          <div class="form-group row">
@@ -83,9 +139,22 @@ Upload Video
                               <th scope="col">Playlist Id</th>
                               <th scope="col">Title</th>
                             <th scope="col">Date And Time</th>
+                            <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody id="video_show">
+
+                            {% for videos in pv %}
+                            <tr>
+                            <td>{{ videos.id }}</td>
+                            <td>{{ videos.video_id }}</td>
+                            <td>{{ videos.playlist_id }}</td>
+                            <td>{{ videos.name }}</td>
+                            <td>{{ videos.datetime }}</td>
+                             <td><button id = "d{{ videos.id }}" onclick="delete_video(this)" class="btn btn-danger" type="button" >Delete</button></td>
+                                 </tr>
+                            {% endfor %}
+
                       </tbody>
                     </table>
                         </div>
@@ -108,7 +177,7 @@ Upload Video
                 $('#video_show').empty();
 
                     for(var key in response.pv){
-                    $('#video_show').append('<tr><th>'+response.pv[key].id+'</th><td>'+response.pv[key].video_id+'</td><td>'+response.pv[key].playlist_id+'</th><td>'+response.pv[key].name+'</th><td>'+response.pv[key].datetime+'</td></tr>');
+                    $('#video_show').append('<tr><th>'+response.pv[key].id+'</th><td>'+response.pv[key].video_id+'</td><td>'+response.pv[key].playlist_id+'</th><td>'+response.pv[key].name+'</th><td>'+response.pv[key].datetime+'</td> <td><button id = "d'+response.pv[key].id+'" onclick="delete_video(this)" class="btn btn-danger" type="button" >Delete</button></td> </tr>');
                     }
 
                  }
@@ -117,8 +186,30 @@ Upload Video
             });
         });
 
+        function delete_video(id){
+              $.ajax({
+              type: "GET",
+              url: "/delete_from_playlist",
+              data: {
+                    playlist_id : "{{ playlist_id }}",
+                    id : parseInt(id.id.substring(1))
+              },
+              success: function (response) {
+                console.log(response);
+                $('#video_show').empty();
+
+                    for(var key in response.pv){
+                    $('#video_show').append('<tr><th>'+response.pv[key].id+'</th><td>'+response.pv[key].video_id+'</td><td>'+response.pv[key].playlist_id+'</th><td>'+response.pv[key].name+'</th><td>'+response.pv[key].datetime+'</td> <td><button id = "d'+response.pv[key].id+'" onclick="delete_video(this)" class="btn btn-danger" type="button" >Delete</button></td> </tr>');
+                    }
+
+                 }
+            });
+        }
+
+
+
         $("#done_select").click(function(){
-                window.location.href ='';
+                window.location.href ='../create_playlist';
         });
     </script>
         {% endif %}

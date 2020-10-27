@@ -316,7 +316,7 @@ def comment(request):
         print(comment_text)
         print(video_id)
         video = Video.objects.get(id = video_id)
-        new_comment = Comment(text = comment_text, user = request.user , video = video)
+        new_comment = Comment(name = request.user,text = comment_text, user = request.user , video = video)
         new_comment.save()
         comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
         return JsonResponse({'comments': list(comments.values())})
@@ -327,7 +327,7 @@ def delete_comment(request):
         video_id = request.GET.get('video_id', False)
         print(video_id)
         print(comment_id)
-        Comment.objects.filter(pk = comment_id).delete();
+        Comment.objects.filter(pk = comment_id).delete()
         comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
         return JsonResponse({'comments': list(comments.values())})
 
@@ -562,6 +562,7 @@ def add_video_flag(request):
 
 def create_playlist(request):
     context={"new_playlist" : False}
+    playlist = Playlist.objects.order_by('-upload_date')
     videos = Video.objects.order_by('-upload_date')
     context["videos"] = videos
     if request.method == 'POST':
@@ -585,6 +586,7 @@ def create_playlist(request):
         context["new_playlist"] = True
         context["playlist_id"]=playlist.id
         return render(request, 'products/create_playlist.html' , context)
+    context['playlist'] = playlist
     return render(request, 'products/create_playlist.html',context)
 
 def add_to_playlist(request):
@@ -600,6 +602,35 @@ def add_to_playlist(request):
             pv.save()
         pv = playlist_video.objects.filter(playlist = playlist)
         return JsonResponse({"pv":list(pv.values())})
+
+def delete_from_playlist(request):
+    if request.method == "GET":
+        id = request.GET.get('id', False)
+        playlist_id = request.GET.get('playlist_id', False)
+        playlist = Playlist.objects.get(pk = playlist_id)
+        playlist_video.objects.get(pk = id).delete()
+        pv = playlist_video.objects.filter(playlist = playlist)
+        return JsonResponse({"pv":list(pv.values())})
+
+
+def delete_playlist(request):
+    if request.method == "GET":
+        playlist_id = request.GET.get('playlist_id', False)
+        Playlist.objects.get(pk = playlist_id).delete()
+        pv = Playlist.objects.all()
+        return JsonResponse({"pv":list(pv.values())})
+
+
+def modify_playlist(request,id):
+    context = {"new_playlist": True}
+    videos = Video.objects.order_by('-upload_date')
+    context["videos"] = videos
+    context["playlist_id"] = id
+    pv = playlist_video.objects.filter(playlist = id)
+    context["pv"] = pv
+    return render(request, 'products/create_playlist.html', context)
+
+
 
 
 def make_payment(request):

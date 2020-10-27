@@ -14,6 +14,7 @@
  <link rel="stylesheet" href="{% static 'style.css' %}">
       <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
 
   <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
@@ -31,8 +32,8 @@
   <body style="background:url({% static "image5.jpg" %});-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
     <header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-dark" >
-  <a style="color: aqua" class="navbar-brand" href="{% url 'home_view'%}"><h4>STRANGEFLIX</h4></a>
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark" >
+  <a style="font-family:verdana;font-size:20px"  class="navbar-brand" href="{% url 'home_view'%}"><h4>STRANGEFLIX</h4></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -41,38 +42,38 @@
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
 
-             <a style="color: yellow" class="nav-link {% if request.path == '/' %} active {% endif %}" href="/">Home</a>
+             <a style="font-family:verdana;font-size:17px"  class="nav-link {% if request.path == '/' %} active {% endif %}" href="/">Home</a>
        </li>
          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/playlist' %} active {% endif %}" href="/playlist">Playlist</a>
+            <a style="font-family:verdana;font-size:17px"  class="nav-link {% if request.path == '/playlist/' %} active {% endif %}" href="/playlist">Playlist</a>
         </li>
 
          {% if user.is_staff %}
         <li class="nav-item">
-            <a style="color: brown" class="nav-link {% if request.path == '/new_video' %} active {% endif %}" href="/new_video">Upload Video</a>
+            <a style="font-family:verdana;font-size:17px"  class="nav-link {% if request.path == '/new_video' %} active {% endif %}" href="/new_video">Upload Video</a>
        </li>
 
          <li class="nav-item">
-          <a style="color: brown" class="nav-link {% if request.path == '/create_playlist' %} active {% endif %}" href="/create_playlist">Create Playlist</a>
+          <a style="font-family:verdana;font-size:17px"  class="nav-link {% if request.path == '/create_playlist' %} active {% endif %}" href="/create_playlist">Create Playlist</a>
       </li>
 
         {% endif %}
        {% if user.is_authenticated %}
 
         <li class="nav-item">
-            <a class="nav-link {% if request.path == '/favourite_video' %} active {% endif %}" href="/favourite_video">Favourite</a>
+            <a style="font-family:new century schoolbook;font-size:17px" class="nav-link {% if request.path == '/favourite_video' %} active {% endif %}" href="/favourite_video">Favourite</a>
         </li>
         <li class="nav-item">
-                <a style="color: brown" class="nav-link {% if request.path == '/history_video' %} active {% endif %}" href="/history_video">History</a>
+                <a style="font-family:verdana;font-size:17px"  class="nav-link {% if request.path == '/history_video' %} active {% endif %}" href="/history_video">History</a>
           </li>
 
-         <a class="nav-link" href="{%url 'user_payment'%}" style="color: grey">{{request.user|slice:":8"}}<span class="sr-only">(current)</span></a>
+         <a class="nav-link" style="font-family:verdana;font-size:17px"  href="{%url 'user_payment'%}" style="color: grey">{{request.user|slice:":8"}}<span class="sr-only">(current)</span></a>
          </li>
           <li class="nav-item active">
 
-         <a class="nav-link" style="color: grey" href="javascript:{document.getElementById('logout').submit()}">LOGOUT<span class="sr-only">(current)</span></a>
+         <a class="nav-link" style="font-family:verdana;font-size:17px"  href="javascript:{document.getElementById('logout').submit()}">Logout<span class="sr-only">(current)</span></a>
 
-        <form id="logout" method="POST" action="{% url 'logout' %}">
+        <form style="font-family:verdana;font-size:17px"  id="logout" method="POST" action="{% url 'logout' %}">
            {% csrf_token %}
            <input type="hidden"/>
           </form>
@@ -80,10 +81,10 @@
 
          {%else%}
          <li class="nav-item active">
-        <a class="nav-link" href="{% url 'login' %}" style="color: brown">Login<span class="sr-only">(current)</span></a>
+        <a class="nav-link" style="font-family:verdana;font-size:17px" href="{% url 'login' %}" >Login<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-        <a class="nav-link" href="{% url 'signup' %}" style="color: brown">Signup<span class="sr-only">(current)</span></a>
+        <a class="nav-link" style="font-family:verdana;font-size:17px"  href="{% url 'signup' %}" >Signup<span class="sr-only">(current)</span></a>
         </li>
          {%endif%}
 
@@ -92,7 +93,7 @@
     </ul>
 
        {%if user.is_staff%}
-      <a href="{% url 'notification' %}"><i class="fa fa-bell" aria-hidden="true" style="color: green; margin-right: 20px;cursor: pointer;"></i></a>
+      <a style="font-family:verdana;font-size:17px"  href="{% url 'notification' %}"><i class="fa fa-bell" aria-hidden="true" style="color: green; margin-right: 20px;cursor: pointer;"></i></a>
       {% endif%}
 
     <div class="form-inline my-2 my-lg-0" >
@@ -100,7 +101,7 @@
         <form action="{% url 'search' %}" method="POST" >
             {% csrf_token %}
           <input name ="search_text"  class="form-control mr-sm-2" type="search" placeholder="Search by name, category, tag" aria-label="Search" >
-          <input id ="search_btn" class="btn btn-outline-success my-2 my-sm-0"  type="submit" value="Submit" >
+          <input id ="search_btn" class="btn btn-success my-2 my-sm-0"  type="submit" value="Submit" >
         </form>
     </div>
   </div>
@@ -112,6 +113,8 @@
   {% block body %}
   {% endblock %}
   </div>
+
+  
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
@@ -122,4 +125,5 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
 </html>

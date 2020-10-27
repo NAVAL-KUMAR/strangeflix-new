@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
       console.log(response);
         $('#commment_list').empty();
         for(var key in response.comments){
-            var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
+            var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].name+'</div> <div class="float-right">';
                     if(user_id == response.comments[key].user_id){
 
                      temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
@@ -155,7 +155,7 @@ var theVideo = document.getElementById("my_video");
                 console.log(response);
                 $('#commment_list').empty();
                 for(var key in response.comments){
-                    var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
+                    var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].name+'</div> <div class="float-right">';
                     if(user_id == response.comments[key].user_id){
 
                      temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
@@ -195,7 +195,7 @@ var theVideo = document.getElementById("my_video");
                 console.log(response);
                 $('#commment_list').empty();
                 for(var key in response.comments){
-                   var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].user_id+'</div> <div class="float-right">';
+                   var temp = '<div class="card my-2"> <div class="card-header"> <div class="float-left">'+response.comments[key].name+'</div> <div class="float-right">';
                     if(user_id == response.comments[key].user_id){
 
                      temp = temp + '<button id = "e'+response.comments[key].id+'" class="btn btn-primary mx-1" onclick="openForm(this)"><strong><i class="fa fa-pencil"  style="font-size:20px;" aria-hidden="true"></i></strong></button>';
