@@ -19,7 +19,7 @@ Home
         <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
                  {% load static %}
               <a href='/video/{{ video.video.id }}/{{ playlist_id }}'>
-              <img src="{{video.video.thumbtail.url}}" class="card-img-top" alt="No Video Present">
+              <img src="{{video.video.thumbtail}}" class="card-img-top" alt="No Video Present">
               </a>
                   <p class = "mx-3 my-3"><strong class="font-italic">{{ video.video.title }}</strong><br><small class="text-muted" >Uploaded by {{ video.video.user }} on {{ video.video.upload_date }}</small></p>
             </div>
