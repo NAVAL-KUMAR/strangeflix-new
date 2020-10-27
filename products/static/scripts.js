@@ -1,4 +1,4 @@
-var vid, playbtn ,volumeslider, mutebtn, curtimetext, durtimetext, seekslider , videoPlayerBox , fullScreenBtn , backward10 , forward10 , playback2 ,playback1_5,playback1,playback0_5,playback0_25;
+var vid, vc , playbtn ,volumeslider, mutebtn, curtimetext, durtimetext, seekslider , videoPlayerBox , fullScreenBtn , backward10 , forward10 , playback2 ,playback1_5,playback1,playback0_5,playback0_25;
 
 function initializeplayer(){
 
@@ -30,6 +30,7 @@ function initializeplayer(){
     playback1.addEventListener("click",playback1speed,false);
     playback0_5.addEventListener("click",playback0_5speed,false);
     playback0_25.addEventListener("click",playback0_25speed,false);
+    vid.addEventListener("click",videocontrol,false);
     seekslider.addEventListener("change",vidSeek,false);
 
     vid.addEventListener("timeupdate",seektimeupdate,false);
@@ -40,6 +41,17 @@ function initializeplayer(){
 window.onload = initializeplayer;
 
 function playPause(){
+    if(vid.paused){
+        vid.play();
+        playbtn.className='fa fa-pause';
+    }else{
+        console.log(vid);
+        vid.pause();
+        playbtn.className='fa fa-play';
+    }
+}
+
+function videocontrol(){
     if(vid.paused){
         vid.play();
         playbtn.className='fa fa-pause';

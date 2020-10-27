@@ -113,35 +113,35 @@ jQuery(document).ready(function () {
 
 var theVideo = document.getElementById("my_video");
 
-//  document.onkeydown = function(event) {
-//        console.log(event.keyCode);
-//      switch (event.keyCode) {
-//         case 37:
-//              event.preventDefault();
-//
-//              vid_currentTime = theVideo.currentTime;
-//              theVideo.currentTime = vid_currentTime - 10;
-//            break;
-//
-//         case 39:
-//              event.preventDefault();
-//
-//              vid_currentTime = theVideo.currentTime;
-//              theVideo.currentTime = vid_currentTime + 10;
-//            break;
-//         case 32:
-//            event.preventDefault();
-//            if(vid.paused){
-//                vid.play();
-//                document.getElementById('playpausebtn').className='fa fa-play';
-//            }else{
-//                vid.pause();
-//                document.getElementById('playpausebtn').className='fa fa-pause';
-//            }
-//            break;
-//
-//      }
-//  };
+  theVideo.onkeydown = function(event) {
+        console.log(event.keyCode);
+      switch (event.keyCode) {
+         case 37:
+              event.preventDefault();
+
+              vid_currentTime = theVideo.currentTime;
+              theVideo.currentTime = vid_currentTime - 10;
+            break;
+
+         case 39:
+              event.preventDefault();
+
+              vid_currentTime = theVideo.currentTime;
+              theVideo.currentTime = vid_currentTime + 10;
+            break;
+         case 32:
+            event.preventDefault();
+            if(vid.paused){
+                vid.play();
+                document.getElementById('playpausebtn').className='fa fa-play';
+            }else{
+                vid.pause();
+                document.getElementById('playpausebtn').className='fa fa-pause';
+            }
+            break;
+
+      }
+  };
 
   function delete_comment(id){
             $.ajax({
