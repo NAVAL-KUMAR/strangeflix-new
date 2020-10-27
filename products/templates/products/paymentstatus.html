@@ -8,12 +8,36 @@ payment status
 
 
 {% block body %}
-{{response}}
-<h1>patment status regarding your order id {{response.ORDERID}}</h1>
-{%if response.RESPCODE == '01' %}
-order sucesss
-{%else%}
-order fail
-{%endif%}
+
+<h1 align="center">patment status</h1>
+
+
+<div id="commment_list">
+                   
+                           <div class="shadow-lg card my-4">
+                              <div class="card-header">
+                                  <div class="float-left">Amount - {{response.CURRENCY}} {{ response.TXNAMOUNT}}</div>
+                                    <div class="float-right">
+                                        
+                                            
+                                    </div>
+                                   
+                                    
+
+                              </div>
+
+                              <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                  <p> {{response.RESPMSG}}</p>
+                                  <footer class="blockquote-footer">{%if response.RESPCODE == '01' %}
+                                           <h4> order sucesss</h4>
+                                            {%else%}
+                                           <h4> order fail</h4>
+                                            {%endif%}</footer>
+                                </blockquote>
+                              </div>
+                            </div>
+                    
+                </div>
 
 {% endblock %}

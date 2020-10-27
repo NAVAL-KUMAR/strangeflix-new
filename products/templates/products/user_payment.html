@@ -8,17 +8,24 @@ payment status
 
 
 {% block body %}
-<h1>PAYMENT STATUS</h1>
+<h2 style="font: 2rem monospace; color: brown;" align="center">ALL PAYMENT STATUS</h2>
+{% for obj in info%}
+<div {% if obj.status == "TXN_SUCCESS" %}
 
-<div style="background-color: grey;">
+style="background-color: green;border-radius: 8px;"
 
-	{% for obj in info%}
-      <h3>{{obj.startdate}}</h3>
-      <h3>{{obj.status}}</h3>
-      <h3>Type  - {{obj.type}}</h3>
-      <div style="background-color: white;height: 10px;"></div>
-	{%endfor%}
+{%else%}
 
+style="background-color: red; border-radius: 8px; "
+{% endif %} 
+>
+
+	<h3 style="margin-left: 5px;">{{obj.status}} <span style="float: right;">{{obj.startdate}}</span></h3>
+      <h3 style="margin-left: 5px;">Type  - {{obj.type}}</h3>
+     <h3 style="margin-left: 5px;">Amount INR {{obj.amount}}</h3>
 </div>
+<div style="background-color: white;height: 8px;"></div>
+
+{%endfor%}
 
 {% endblock %}

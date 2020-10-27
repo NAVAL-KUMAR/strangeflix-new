@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.base import View, HttpResponseRedirect, HttpResponse
 from .forms import  NewVideoForm , CommentForm
-from .models import Video, Comment, Like, Favourite, History, Tag, Flag, Playlist, playlist_video,payPerView
+from .models import Video, Comment, Like, Favourite, History, Tag, Flag, Playlist, playlist_video,payPerView,UserNotification
 from django.core.files.storage import FileSystemStorage
 import os
 from django.shortcuts import render, redirect,get_object_or_404
@@ -201,7 +201,6 @@ class HistoryVideo(View):
 @login_required(login_url="/login")
 def video_view(request,id,id1):
     if id1 == 0:
-
         next_video = []
         vid = Video.objects.get(pk=id)
         if vid.premium:
@@ -308,7 +307,7 @@ def video_view(request,id,id1):
 
     return render(request,'products/video.html', context)
 
-
+@login_required(login_url="/login")
 def comment(request):
     if request.method == 'POST':
         comment_text = request.POST.get('comment_text',False)
@@ -321,6 +320,7 @@ def comment(request):
         comments = Comment.objects.filter(video_id=video_id).order_by('-datetime')
         return JsonResponse({'comments': list(comments.values())})
 
+@login_required(login_url="/login")
 def delete_comment(request):
     if request.method == 'GET':
         comment_id = request.GET.get('comment_id',False)
@@ -332,7 +332,7 @@ def delete_comment(request):
         return JsonResponse({'comments': list(comments.values())})
 
 
-
+@login_required(login_url="/login")
 def edit_comment(request):
     if request.method == 'GET':
         comment_id = request.GET.get('comment_id',False)
@@ -353,7 +353,7 @@ def edit_comment(request):
 
 
 
-
+@login_required(login_url="/login")
 def liked(request):
     if request.method == 'GET':
         video_id = request.GET.get('video_id', False)
@@ -374,7 +374,7 @@ def liked(request):
         context['total_dislike'] = video.dislikes
         return JsonResponse(context)
 
-
+@login_required(login_url="/login")
 def disliked(request):
     if request.method == 'GET':
         video_id = request.GET.get('video_id', False)
@@ -395,7 +395,7 @@ def disliked(request):
         context['total_like'] = video.likes
         return JsonResponse(context)
 
-
+@login_required(login_url="/login")
 def favourite(request):
     if request.method == 'GET':
         video_id = request.GET.get('video_id', False)
@@ -409,13 +409,13 @@ def favourite(request):
         context = {'fav': fav.favourite}
         return JsonResponse(context)
 
-
+@login_required(login_url="/login")
 def comment_list(request):
     video_id = request.POST.get('video_id', False)
     comments = Comment.objects.filter(video_id=2).order_by('-datetime')[:5]
     return JsonResponse({'comments': list(comments.values())})
 
-
+@login_required(login_url="/login")
 def new_video(request):
     if request.method=='POST':
         bvl=False
@@ -453,7 +453,7 @@ def new_video(request):
 
     return render(request,'products/new_video.html')
 
-
+@login_required(login_url="/login")
 def add_tag(request):
     if request.method == 'POST':
         video_id = request.POST.get('video_id', False)
@@ -466,12 +466,15 @@ def add_tag(request):
     else:
         return render(request, 'products/index.html')
 
-
+@login_required(login_url="/login")
 def notification(request):
+    admin=request.user
+    if not admin.is_staff:
+        return HttpResponse('not authorised')
     items = Flag.objects.all().order_by('-date')
     return render(request, 'products/notification.html', {'items': items})
 
-
+@login_required(login_url="/login")
 def delete_video(request):
     if request.method == 'POST':
         id = request.POST.get('idvideo')
@@ -481,7 +484,7 @@ def delete_video(request):
         messages.success(request, 'video deleated successfully')
         return redirect('home_view')
 
-
+@login_required(login_url="/login")
 def ignore_goto_video(request):
     if request.method == 'GET':
         id = request.GET.get('notification_v_id', False)
@@ -495,7 +498,7 @@ def ignore_goto_video(request):
 
         return JsonResponse({'id': flag.video.id, 'redirect': redirect})
 
-
+@login_required(login_url="/login")
 def ignore_v(request):
     if request.method == 'GET':
         id = request.GET.get('notification_v_id', False)
@@ -506,6 +509,7 @@ def ignore_v(request):
         flg = list(flgs.values())
         return JsonResponse({'flg': flg})
 
+@login_required(login_url="/login")
 def save_video_time(request):
     if request.method == 'GET':
         time = request.GET.get('time', False)
@@ -517,6 +521,7 @@ def save_video_time(request):
         history.save()
         return JsonResponse({'TEXT':"SAVED"})
 
+@login_required(login_url="/login")
 def add_comment_flag(request):
     if request.method == 'GET':
         comment_id = request.GET.get('comment_id',False)
@@ -535,6 +540,7 @@ def add_comment_flag(request):
         flag.save()
         return JsonResponse({})
 
+@login_required(login_url="/login")
 def delete_comm(request):
     if request.method == 'GET':
         flag_id = request.GET.get('notf_id',False)
@@ -544,7 +550,7 @@ def delete_comm(request):
         comment.delete()
         return JsonResponse({})
 
-
+@login_required(login_url="/login")
 def add_video_flag(request):
     if request.method == 'GET':
         video_id = request.GET.get('video_id', False)
@@ -559,8 +565,67 @@ def add_video_flag(request):
         flag.save()
         return JsonResponse({})
 
+@login_required(login_url="/login")
+def add_user_notification(request):
+    notf=UserNotification.objects.all().order_by('-date')
+    admin=request.user
+    if not admin.is_staff:
+        return HttpResponse('not authorised')
+    context={'notifications_obj':False}
+    video=Video.objects.all().order_by('-upload_date')
+    comment=Comment.objects.all()
+    context['user']=User.objects.all()
+    context['video']=video
+    context['notf']=notf
+    context['comment']=comment
+    if request.method=='POST' and 'description' in request.POST:
+        des=request.POST.get('description',False)
+        type=''
+        if 'type' in request.POST:
+            type=request.POST.get('type',False)
+        else:
+            messages.add_message(request,messages.ERROR,'add a valid notification category')
+            return render(request,'products/add_user_notification.html',context)
+        if 'user' in request.POST and type=='all':
+            messages.add_message(request,messages.ERROR,'add a valid user and type')
+            return render(request,'products/add_user_notification.html',context)
 
+        notf=UserNotification()
+        notf.description=des
+        notf.date=timezone.now()
+        if 'video' in request.POST:
+            video_id=request.POST.get('video',False)
+            video=Video.objects.get(id=video_id)
+            notf.video=video
+
+        if 'comment' in request.POST:
+            comment_id=request.POST.get('comment',False)
+            comment=Comment.objects.get(id=comment_id)
+            notf.comment=comment
+
+        if 'user' in request.POST:
+            usr=User.objects.get(id=request.POST.get('user',False))
+            notf.user=usr
+
+        notf.type=type
+        notf.save()
+        messages.add_message(request,messages.SUCCESS,'notified sucessfully')
+        return render(request,'products/add_user_notification.html',context)
+    elif request.method=='POST' and 'id' in request.POST:
+        id=request.POST.get('id')
+        notf=UserNotification.objects.get(id=id)
+        notf.delete()
+        messages.add_message(request,messages.SUCCESS,'message sucessfully deleteted')
+        return render(request,'products/add_user_notification.html',context)
+
+    else:
+        return render(request,'products/add_user_notification.html',context)
+
+@login_required(login_url="/login")
 def create_playlist(request):
+    admin=request.user
+    if not admin.is_staff:
+        return HttpResponse('not authorised')
     context={"new_playlist" : False}
     videos = Video.objects.order_by('-upload_date')
     context["videos"] = videos
@@ -587,6 +652,7 @@ def create_playlist(request):
         return render(request, 'products/create_playlist.html' , context)
     return render(request, 'products/create_playlist.html',context)
 
+@login_required(login_url="/login")
 def add_to_playlist(request):
     if request.method == "GET":
         video_id = request.GET.get('video_id', False)
@@ -601,20 +667,19 @@ def add_to_playlist(request):
         pv = playlist_video.objects.filter(playlist = playlist)
         return JsonResponse({"pv":list(pv.values())})
 
-
+@login_required(login_url="/login")
 def make_payment(request):
     if request.method == 'POST':
         type = request.POST.get('subcription')
         email = request.user.email
-        print(type)
         amount = 1
         if (type == 'Y'):
-            amount = 129
+            amount = 5
         elif (type == 'M'):
-            amount = 1500
+            amount = 1
 
         param_dict = {
-            'MID': 'TrQkAe12345378628123',
+            'MID': 'TsiFjW01458185712345',
             'ORDER_ID': str(request.user.id),
             'TXN_AMOUNT': str(amount),
             'CUST_ID': email,
@@ -647,19 +712,21 @@ def handlerequest(request):
         else:
             print('payment unsucessull because '+ response_dict['RESPMSG'])
             '''
-    print('payment status is ' + response_dict['TXNAMOUNT'])
+    rs=response_dict['TXNAMOUNT']
     # reaponse_dict['STATUS'] ('TXN_SUCCESS','TXN_FAILURE')
     payperview = payPerView()
     usr = User.objects.get(id=response_dict['ORDERID'])
     payperview.user = usr
     payperview.startdate = timezone.now()
     payperview.status = response_dict['STATUS']
+    amount = int(float(rs))
+    payperview.amount=amount
     if response_dict['RESPCODE'] == '01':
-        amount = response_dict['TXNAMOUNT']
-        if amount == '129':
+        print(amount)
+        if amount == '1':
             payperview.enddate = timezone.now() + datetime.timedelta(days=30)
             payperview.type = 'Monthly'
-        elif amount == '1500':
+        elif amount == '5':
             payperview.enddate = timezone.now() + datetime.timedelta(days=365)
             payperview.type = 'Yearly'
     else:
@@ -669,9 +736,23 @@ def handlerequest(request):
 
     return render(request, 'products/paymentstatus.html', {'response': response_dict})
 
-
+@login_required(login_url="/login")
 def user_payment(request):
     payperview = payPerView.objects.filter(user=request.user).order_by('-startdate').all()
     return render(request, 'products/user_payment.html', {'info': payperview})
+
+@login_required(login_url="/login")
+def user_notification(request):
+    notf=UserNotification.objects.order_by('-date').all()
+    items=[]
+
+    for obj in notf:
+        print(obj.type)
+        if obj.type =='all':
+            items.append(obj)
+        elif obj.user==request.user:
+            items.append(obj)
+
+    return render(request,'products/user_notification.html',{'notf':items})
 
 
