@@ -672,15 +672,14 @@ def make_payment(request):
     if request.method == 'POST':
         type = request.POST.get('subcription')
         email = request.user.email
-        print(type)
         amount = 1
         if (type == 'Y'):
-            amount = 129
+            amount = 5
         elif (type == 'M'):
-            amount = 1500
+            amount = 1
 
         param_dict = {
-            'MID': 'TrQkAe12345378628123',
+            'MID': 'TsiFjW01458185712345',
             'ORDER_ID': str(request.user.id),
             'TXN_AMOUNT': str(amount),
             'CUST_ID': email,
@@ -713,19 +712,21 @@ def handlerequest(request):
         else:
             print('payment unsucessull because '+ response_dict['RESPMSG'])
             '''
-    print('payment status is ' + response_dict['TXNAMOUNT'])
+    rs=response_dict['TXNAMOUNT']
     # reaponse_dict['STATUS'] ('TXN_SUCCESS','TXN_FAILURE')
     payperview = payPerView()
     usr = User.objects.get(id=response_dict['ORDERID'])
     payperview.user = usr
     payperview.startdate = timezone.now()
     payperview.status = response_dict['STATUS']
+    amount = int(float(rs))
+    payperview.amount=amount
     if response_dict['RESPCODE'] == '01':
-        amount = response_dict['TXNAMOUNT']
-        if amount == '129':
+        print(amount)
+        if amount == '1':
             payperview.enddate = timezone.now() + datetime.timedelta(days=30)
             payperview.type = 'Monthly'
-        elif amount == '1500':
+        elif amount == '5':
             payperview.enddate = timezone.now() + datetime.timedelta(days=365)
             payperview.type = 'Yearly'
     else:
