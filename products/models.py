@@ -85,6 +85,10 @@ class Playlist(models.Model):
     upload_date = models.DateTimeField(auto_now=True, blank=False, null=False)
     premium = models.BooleanField()
 
+    def __str__(self):
+        return str(self.title)
+
+
 class playlist_video(models.Model):
     name = models.CharField(max_length=50)
     datetime = models.DateTimeField()
@@ -93,6 +97,9 @@ class playlist_video(models.Model):
 
     def date_prety(self):
         return self.datetime.strftime('%d-%m-%Y %H:%M:%S')
+
+    def __str__(self):
+        return str(self.name)
 
 class payPerView(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -103,3 +110,15 @@ class payPerView(models.Model):
 
     def __str__(self):
         return str(self.user) + str("/") + str(self.enddate) + str('/') + self.status
+
+class UserNotification(models.Model):
+    video=models.ForeignKey(Video,on_delete=models.CASCADE,blank=True, null=True,)
+    comment=models.ForeignKey(Comment,on_delete=models.CASCADE,blank=True, null=True)
+    description=models.TextField(max_length=500,null=True,blank=True)
+    user=models.ForeignKey('auth.User',on_delete=models.CASCADE,null=True,blank=True)
+    type=models.CharField(max_length=10)
+    date=models.DateTimeField()
+
+
+
+
