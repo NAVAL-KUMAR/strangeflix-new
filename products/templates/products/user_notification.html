@@ -1,0 +1,30 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+notification
+
+{% endblock %}
+
+{% block body %}
+
+<h2 style="font: 2rem monospace; color: brown;" align="center">Notification</h2>
+{% for obj in notf %}
+<div style="background-color: brown;margin-left: 5px;margin-right: 5px; padding: 5px;" >
+
+	<h5 style="margin-left: 5px;">
+     {%if obj.video %}
+       <button style="border-radius: 10px;"><a href='/video/{{ obj.video.id }}/0'>go to video</a></button>
+     {%endif%}
+	 <span style="float: right;">{{obj.date}}</span></h5>
+	 {% if obj.comment %}
+        <h6 style="color: red ; margin-left: 18px;">comment - {{obj.comment.text}}</h6>
+	 {%endif%}
+      <h5 style="margin-left: 5px;">{{obj.description}}</h5>
+
+
+</div>
+<div style="background-color: white;height: 8px;"></div>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "products/parent.html" %}
+
+{% block title %}
+add_notification
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div align="center">
+	{% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h6 style="color: red;">{{ message }}</h6></li>
+    {% endfor %}
+    <br>
+<form method="POST" action="{%url 'add_user_notification' %}">
+	{%csrf_token%}
+	<textarea placeholder="description" style="border-radius: 10px;border-color: red; height: 200px;width: 90%;margin-right: 8px;margin-left: 8px;" name="description"></textarea>
+	<br>
+	<br>
+	<select class="browser-default custom-select" id="brow" style="border-radius: 10px;width: 90%; margin-right: 8px;margin-left: 8px;" name="type" >
+		<option disabled selected>select notification category</option>
+		<option style="border-radius: 10px;height: 20px;">all</option>
+		<option style="border-radius: 10px;height: 20px;">single</option>
+	</select>
+	<br>
+	<br>
+	<select class="browser-default custom-select"  style="border-radius: 10px;width: 90%;margin-right: 8px;margin-left: 8px;" name="video">
+		<option disabled selected>select video</option>
+		{%for item in video%}
+		<option value="{{item.id}}">{{item.title}}</option>
+		{%endfor%}
+	</select>
+	<br>
+	<br>
+	<select class="browser-default custom-select" style="border-radius: 10px;width: 90%;margin-right: 8px;margin-left: 8px;" name="comment">
+		<option disabled selected>select comment</option>
+		{%for item in comment%}
+		<option value="{{item.id}}">{{item.text}}</option>
+		{%endfor%}
+	</select>
+	<br>
+	<br>
+	<select class="browser-default custom-select" style="border-radius: 10px;width: 90%;margin-right: 8px;margin-left: 8px;" name="user">
+		<option disabled selected>select user</option>
+		{%for item in user%}
+		<option value="{{item.id}}">{{item.first_name}}</option>
+		{%endfor%}
+	</select>
+	<br>
+	<br>
+	<button style="width: 70%" type="submit">submit</button>
+</form>
+
+
+</div>
+<hr>
+
+<h2 style="font: 2rem monospace; color: brown;" align="center">all Added Notification</h2>
+{% for obj in notf %}
+<div style="background-color: brown;margin-left: 5px;margin-right: 5px;padding: 5px;" >
+    <form action="{%url 'add_user_notification'%}" method="POST">
+    	{% csrf_token %}
+    	<input type="hidden" name="id" value="{{obj.id}}">
+    	<button style="" type="submit">delete Notification</button>
+    </form>
+	<h5 style="margin-left: 5px;">
+     {%if obj.video %}
+       <button style="border-radius: 10px;"><a href='/video/{{ obj.video.id }}/0'>go to video</a></button>
+     {%endif%}
+	 <span style="float: right;">{{obj.date}}</span></h5>
+	 {% if obj.comment %}
+        <h6 style="color: red ; margin-left: 18px;">comment - {{obj.comment.text}}</h6>
+	 {%endif%}
+      <h5 style="margin-left: 5px;">{{obj.description}}</h5>
+
+
+</div>
+<div style="background-color: white;height: 8px;"></div>
+{% endfor %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock %}
