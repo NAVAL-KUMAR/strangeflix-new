@@ -19,8 +19,8 @@ Home
             <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
                  {% load static %}
               <a href='/video/{{ video.id }}/0'>
-              <img src="{{video.thumbtail.url}}" class="card-img-top" alt="No Video Present">
-              </a>
+              <img src="{{video.thumbtail}}" class="card-img-top" alt="No Video Present">
+                  </a>
                   <p class = "mx-3 my-3"><strong class="font-italic">{{ video.title }}</strong><br><small class="text-muted" >Uploaded by {{ video.user }} on {{ video.upload_date }}</small></p>
             </div>
 
@@ -32,8 +32,8 @@ Home
             <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;position:relative;">
                  {% load static %}
               <a href='/video/0/{{ playlist.id }}'>
-                  <img src="{{playlist.thumbtail.url}}" class="card-img-top" alt="No Video Present">
-                  <img src='{% static "playlist.png" %}'  style = "position: absolute;right:0px;right:0px;top: 0px;width:200px;opacity:0.4;filter: invert(1);" class="card-img-top" alt="No Video Present">
+                   <img src="{{playlist.thumbtail}}" class="card-img-top" alt="No Video Present">
+            <img src='{% static "playlist.png" %}'  style = "position: absolute;right:0px;right:0px;top: 0px;width:200px;opacity:0.4;filter: invert(1);" class="card-img-top" alt="No Video Present">
 
               </a>
                   <p class = "mx-3 my-3"><strong class="font-italic">{{ playlist.title }}</strong><br><small class="text-muted" >Uploaded on {{ playlist.upload_date }}</small></p>

@@ -424,7 +424,7 @@ def new_video(request):
         video.title =request.POST.get('video_title')
         video.description =request.POST.get('video_description')
         play=request.FILES.get('video_filename')
-        img=request.FILES.get('video_thumbtail')
+        img=request.POST.get('video_thumbtail')
         video.type=request.POST.get('video_type')
         video.category = request.POST.get('video_category')
         url=request.POST.get('video_link')
@@ -443,7 +443,7 @@ def new_video(request):
         video.filename=play
         video.thumbtail=img
         video.link=request.POST.get('video_link')
-        video.subtitle=request.POST.get('video_subtitle')
+        video.subtitle=request.FILES.get('video_subtitle')
         if request.POST.get('video_premium'):
             video.premium=True
         else:
@@ -463,7 +463,7 @@ def add_tag(request):
         tag.title = request.POST.get('tag_info')
         tag.video = video
         tag.save()
-        return HttpResponseRedirect('video/{}'.format(str(video.id)))
+        return HttpResponseRedirect('video/{}/0'.format(str(video.id)))
     else:
         return render(request, 'products/index.html')
 
