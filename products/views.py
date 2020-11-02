@@ -141,9 +141,65 @@ class HomeView(View):
     template_name = 'products/index.html'
 
     def get(self, request):
-        most_recent_videos = Video.objects.order_by('-upload_date')
-        playlist_list = Playlist.objects.order_by('-upload_date')
-        return render(request, self.template_name, {'menu_active_item': 'home', 'most_recent_videos': most_recent_videos, 'playlist_list': playlist_list})
+        most_recent_videos = Video.objects.order_by('-upload_date')[:6]
+        context = {'most_recent_videos':most_recent_videos}
+        playlist_list = Playlist.objects.order_by('-upload_date')[:3]
+        context['playlist_list'] = playlist_list
+        videos_all = Video.objects.order_by('-upload_date')
+        playlist_list_all = Playlist.objects.order_by('-upload_date')
+        context['videos_all']= videos_all
+        context['playlist_list_all'] = playlist_list_all
+        tags = list()
+        if request.user.is_authenticated:
+            history_videos = History.objects.filter(user=request.user)
+            for videos in history_videos:
+                x = videos.video.title
+                y = x.split()
+                for _ in y:
+                    tags.append(_.lower())
+
+            for videos in history_videos:
+                x = videos.video.description
+                y = x.split()
+                for _ in y:
+                    tags.append(_.lower())
+
+            for videos in history_videos:
+                id  = videos.video.id
+                tag = Tag.objects.filter(video_id = id)
+
+                for t in tag:
+                    x = t.title.split()
+                    for _ in x:
+                        tags.append(_.lower())
+            dict = {}
+            for _ in tags:
+                if _ in dict.keys():
+                    dict[_]+=1
+                else:
+                    dict[_] = 0
+                    dict[_]+=1
+            l = []
+            for _ in list(dict):
+                x = list()
+                x.append(_)
+                x.append(dict[_])
+                l.append(x)
+            l.sort(key=lambda x: x[1], reverse=True)
+            q = Video.objects.filter(title__contains="adhakdhqwkjdkj")
+            for _ in l:
+                q1 = Video.objects.filter(title__contains=_[0])
+                q2 = Video.objects.filter(category__contains=_[0])
+                q3 = Video.objects.filter(description__contains=_[0])
+                tag = Tag.objects.filter(title__contains=_[0])
+                tagid = []
+                for x in tag:
+                    tagid.append(x.video.id)
+                q4 = Video.objects.filter(id__in=tagid)
+                q = (q | q1 | q2 | q3 | q4)
+            context['recommended'] = q[:6]
+        print(context)
+        return render(request, self.template_name, context)
 
 
 
@@ -637,7 +693,7 @@ def create_playlist(request):
         playlist = Playlist()
         playlist.title = request.POST.get('playlist_title')
         playlist.description = request.POST.get('playlist_description')
-        img = request.FILES.get('playlist_thumbtail')
+        img = request.POST.get('playlist_thumbtail')
         if img == None:
             bvl = True
             messages.add_message(request, messages.ERROR, 'add a valid thumbtail')

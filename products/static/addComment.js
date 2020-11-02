@@ -24,11 +24,10 @@ jQuery(document).ready(function () {
                     }
 
                     temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
-                     temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
+                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].datetime+'</footer>  </blockquote> </div> </div>';
 
 
             $('#commment_list').append(temp);
-           // console.log($('#comment_list'));
         }
       }
     });
@@ -165,7 +164,7 @@ var theVideo = document.getElementById("my_video");
                     temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
 
 
-                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
+                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].datetime+'</footer>  </blockquote> </div> </div>';
 
                     $('#commment_list').append(temp);
                    // console.log($('#comment_list'));
@@ -206,7 +205,7 @@ var theVideo = document.getElementById("my_video");
                     temp = temp + '<button id="f'+response.comments[key].id+'"class="btn btn-success" onclick="openForm_flag(this)"><strong><i class="fa fa-flag" style="font-size:20px;" aria-hidden="true"></i></strong></button>';
 
 
-                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].date_prety+'</footer>  </blockquote> </div> </div>';
+                    temp = temp + '</div> </div> <div class="card-body">  <blockquote class="blockquote mb-0"> <p>'+response.comments[key].text+'</p> <footer class="blockquote-footer">'+response.comments[key].datetime+'</footer>  </blockquote> </div> </div>';
 
 
                     $('#commment_list').append(temp);

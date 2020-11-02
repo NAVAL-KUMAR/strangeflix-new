@@ -11,15 +11,15 @@ Video -
 
 <div class="container-fluid">
     <div class="row">
-        <div  class="form-group col-md-9">
-            <div  id = "video_player_box" class="row my-1" style="cursor:pointer;width:100%;height: calc((8 / 16) * 100vw);max-height: calc(100vh - 169px);position:relative;">
+        <div  id = "mainDiv" class="form-group col-md-9">
+            <div  id = "video_player_box" class="row my-1" style="cursor:pointer;width:100%;height: calc((9/ 16) * 100vw);max-height: calc(100vh - 169px);position:relative;">
 
                 {% if video.type == "Youtube link" %}
-                    <iframe width="100%" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe  width="100%" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 {% else %}
 
 
-                <div id = "video_box" class="row ">
+                <div id = "video_box" class="row">
                     {% if video.type == "upload from system" %}
                     <video id="my_video" autoplay style="position: absolute;left:15px;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail}}">
                         <source src= "{{ video.filename.url }}" type="video/mp4">
@@ -30,7 +30,7 @@ Video -
                     </video>
 
                     {% else %}
-
+                    {% load static %}
                     <video id="my_video" autoplay style="position: absolute;left:15px;width:100%;height:100%;" preload="metadata"  poster="{{video.thumbtail}}">
                         <source src= "{{ video.link }}" type="video/mp4">
                         {% if video.subtitle.url != null %}
@@ -45,11 +45,16 @@ Video -
                        document.getElementById('my_video').currentTime = {{ history.pause_time }};
                    </script>
 
+                    <div id = "buffer" style="z-index: 4;position: absolute;width:100%;top:50%;left:15px;"  >
+                        <div class="row justify-content-center">
+                            <img src="{% static 'loading.gif' %}" alt="">
+                            </div>
+                    </div>
 
+                <div id = "video_control_bar"  style="z-index: 9;width:100%;position:absolute;bottom:30px;left:15px;"  >
 
-                <div id = "video_control_bar" class="mx-5" style="z-index: 9;width:100%;position:absolute;bottom:0px"  >
                     <div id = "video_control" class="row justify-content-center" >
-                        <div class="col-md-3">
+                        <div class="col">
                             <div class="row justify-content-center" >
 
                                 <tr>
@@ -60,24 +65,23 @@ Video -
                                 <td><svg id = "forward10"   xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 171 171" ><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,171.99818v-171.99818h171.99818v171.99818z" fill="none"></path><g fill="#ffffff"><path d="M74.8125,110.4375h-10.6875v-36.69375l-10.6875,4.63125v-8.90625l20.30625,-8.90625h1.06875zM117.5625,89.775c0,6.4125 -1.425,11.75625 -4.63125,15.31875c-3.20625,3.5625 -7.48125,5.34375 -13.18125,5.34375c-5.7,0 -9.975,-1.78125 -13.18125,-5.34375c-3.20625,-3.5625 -4.63125,-8.55 -4.63125,-15.31875v-8.90625c0,-6.4125 1.425,-11.75625 4.63125,-15.31875c3.20625,-3.5625 7.48125,-5.34375 13.18125,-5.34375c5.7,0 9.975,1.78125 13.18125,5.34375c3.20625,3.5625 4.63125,8.55 4.63125,15.31875zM106.875,79.0875c0,-3.91875 -0.7125,-6.76875 -1.78125,-8.55c-1.06875,-1.78125 -2.85,-2.85 -5.34375,-2.85c-2.49375,0 -4.275,0.7125 -5.34375,2.49375c-1.06875,1.78125 -1.78125,4.63125 -1.78125,8.19375v13.5375c0,3.91875 0.7125,6.76875 1.78125,8.55c1.06875,1.78125 2.85,2.85 5.34375,2.85c2.49375,0 4.275,-1.06875 5.34375,-2.85c1.06875,-1.78125 1.78125,-4.63125 1.78125,-8.55v-12.825z"></path><path d="M85.5,42.75l28.5,-21.375l-28.5,-21.375z"></path><path d="M85.5,156.75c-39.1875,0 -71.25,-32.0625 -71.25,-71.25c0,-39.1875 32.0625,-71.25 71.25,-71.25h11.4v14.25h-11.4c-31.35,0 -57,25.65 -57,57c0,31.35 25.65,57 57,57c31.35,0 57,-25.65 57,-57c0,-13.5375 -4.63125,-26.71875 -13.5375,-37.05l10.6875,-9.2625c11.04375,13.18125 17.1,29.56875 17.1,46.3125c0,39.1875 -32.0625,71.25 -71.25,71.25z"></path></g></g></svg></td></tr>
 
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row justify-content-center"  >
-                                 <form  class="range-field" style="color:white;margin:15px;" >
+
+                            <div class="row justify-content-center">
+                                 <form  class="range-field" style="color:white;margin:5px;">
                                      <span id ="curtimetext" >00:00  </span>
-                                        <input  id ="seekslider"  style="width:250px;" type="range" min="0" max="100" step = "1" value="0"/>
+                                        <input  id ="seekslider"  style="width:40vw;" type="range" min="0" max="100" step = "1" value="0"/>
                                      <span id = "durtimetext" >  00:00</span>
                                 </form>
                             </div>
-                        </div>
-                        <div class="col-md-3">
+
                             <div class="row justify-content-center" >
                                 <i id = "mutebtn" class="fa fa-volume-up"   aria-hidden="true"></i>
-                                 <form class="range-field" style="color:white;margin:15px;">
-                                    <input  id ="volumeslider" style="width:100px;" type="range" min="0" max="100" step = "1" value="100"/>
+                                 <form class="range-field" style="color:white;margin:5px;">
+                                    <input  id ="volumeslider" style="width:10vw;" type="range" min="0" max="100" step = "1" value="100"/>
                                  </form>
                                  <i id = "fullscreenbtn"    class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     <i id="subtitles" class="fa fa-cc" style="font-size:30px;color:white;margin:10px;"></i>
+                                <i id= "mode" class="fa fa-window-maximize" style="font-size:30px;color:white;margin:10px;" aria-hidden="true"></i>
                                 <script>
 
 
@@ -177,6 +181,19 @@ Video -
                 {% endif %}
 
                   </div>
+            <script>
+
+                document.getElementById('my_video').onwaiting = function(){
+                            document.getElementById('buffer').style.display = 'block';
+                            document.getElementById("video_control").style.display = "none";
+
+                        };
+                        document.getElementById('my_video').onplaying = function(){
+                             document.getElementById('buffer').style.display = 'none';
+                        };
+
+
+            </script>
 
             <div class="row">
             <div class="container my-1">
@@ -205,17 +222,17 @@ Video -
 
                               <div class="card-body">
                                 <blockquote class="blockquote mb-0">
-                                  <p>Description  : {{ video.description }}</p>
-                                  <footer class="blockquote-footer">{{ video.upload_date }}</footer>
+                                  <p style="font-size:18px;">Description  : {{ video.description }}</p>
+                                  <footer style="font-size:18px;" class="blockquote-footer">{{ video.upload_date }}</footer>
 
                                         <div class="row" >
                                            <div class="container">
 
 
 
-                                         <div class="row mx-5 my-4" >
+                                         <div class="row mx-2 my-4" >
 
-                                                    <div class="col">
+                                                    <div class="col mr-2">
                                                         <i class="fa fa-thumbs-up" id = "liked"
                                                            {% if like_dislike.like == 1 %}
                                                                 style="font-size:30px;color:blue;"
@@ -224,7 +241,7 @@ Video -
 
                                                         </div>
 
-                                                        <div class="col" style="align:center;">
+                                                        <div class="col mx-2" style="align:center;">
                                                         <i class="fa fa-thumbs-down" id = "disliked"
                                                            {% if like_dislike.like == -1 %}
                                                                 style="font-size:30px;color:red;"
@@ -232,7 +249,7 @@ Video -
                                                                 style="font-size:30px;color:grey;"> </i>
                                                         </div>
 
-                                                        <div class="col">
+                                                        <div class="col mx-2">
                                                         <i class="fa fa-heart" id = "favourite"
                                                            {% if fav.favourite %}
                                                                 style="cursor: pointer;font-size:30px;color:red;"
@@ -241,7 +258,7 @@ Video -
                                                         </div>
 
 
-                                                        <div class="col">
+                                                        <div class="col ml-2">
                                                             <i id="btn_flag" onclick="openForm_flag_video(this)"  class="fa fa-flag" style="cursor: pointer; font-size:30px;color:black;" aria-hidden="true"></i>
 
                                                         </div>
@@ -333,7 +350,7 @@ Video -
                               <div class="card-body">
                                 <blockquote class="blockquote mb-0">
                                   <p>{{ comment.text}}</p>
-                                  <footer class="blockquote-footer">{{ comment.date_prety}}</footer>
+                                  <footer class="blockquote-footer">{{ comment.datetime}}</footer>
                                 </blockquote>
                               </div>
                             </div>
@@ -434,14 +451,23 @@ function myFunction() {
 }
 
 document.getElementById("video_box").onmousemove = function(){
-    document.getElementById("video_control").style.opacity = "1";
-    setTimeout(function() {
-      document.getElementById("video_control").style.opacity = "0";
-    }, 10000);
+    if(document.getElementById('buffer').style.display === 'none'){
+    document.getElementById("video_control").style.display = "block";
+    }
+
 };
+ document.getElementById('mode').addEventListener('click',function (){
+  if(document.getElementById("mainDiv").className === 'form-group col-md-12'){
 
-
-
+         document.getElementById("show_video").style.display = "block";
+         document.getElementById("mainDiv").className = 'form-group col-md-9';
+         document.getElementById("video_player_box").style.background = "none";
+     }else{
+         document.getElementById("show_video").style.display = "none";
+         document.getElementById("mainDiv").className = 'form-group col-md-12';
+         document.getElementById("video_player_box").style.background = "black";
+     }
+ });
 </script>
 
 

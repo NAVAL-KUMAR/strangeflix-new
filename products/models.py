@@ -82,7 +82,7 @@ class Flag(models.Model):
 class Playlist(models.Model):
     title = models.CharField(max_length=30)
     description = models.TextField(max_length=300, null=True,blank=True)
-    thumbtail = models.ImageField(upload_to='', blank=True)
+    thumbtail = models.URLField(max_length=20000, blank=True)
     upload_date = models.DateTimeField(auto_now=True, blank=False, null=False)
 
     def __str__(self):

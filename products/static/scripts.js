@@ -30,7 +30,7 @@ function initializeplayer(){
     playback1.addEventListener("click",playback1speed,false);
     playback0_5.addEventListener("click",playback0_5speed,false);
     playback0_25.addEventListener("click",playback0_25speed,false);
-    vid.addEventListener("click",videocontrol,false);
+
     seekslider.addEventListener("change",vidSeek,false);
 
     vid.addEventListener("timeupdate",seektimeupdate,false);
@@ -51,16 +51,7 @@ function playPause(){
     }
 }
 
-function videocontrol(){
-    if(vid.paused){
-        vid.play();
-        playbtn.className='fa fa-pause';
-    }else{
-        console.log(vid);
-        vid.pause();
-        playbtn.className='fa fa-play';
-    }
-}
+
 
 function forward10sec(){
     vid_currentTime = vid.currentTime;

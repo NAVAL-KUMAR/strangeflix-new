@@ -12,8 +12,8 @@ Home
 <main role="main">
 
   <div class="container-fluid">
+      <h5 style="font-family:comic;margin-top:10px;">Recent Uploads</h5><hr>
     <div  id = "show_video" class="row justify-content-md-center">
-
       {% for video in most_recent_videos %}
 
             <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
@@ -26,7 +26,32 @@ Home
 
 
             {% endfor %}
+        </div>
 
+
+      {% if user.is_authenticated  %}
+      {% if recommended  %}
+       <h5 style="font-family:comic;margin-top:10px;">Recommended Videos</h5><hr>
+      <div  id = "show_recomm" class="row justify-content-md-center">
+        {% for video in recommended %}
+
+            <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
+                 {% load static %}
+              <a href='/video/{{ video.id }}/0'>
+              <img src="{{video.thumbtail}}" class="card-img-top" alt="No Video Present">
+                  </a>
+                  <p class = "mx-3 my-3"><strong class="font-italic">{{ video.title }}</strong><br><small class="text-muted" >Uploaded by {{ video.user }} on {{ video.upload_date }}</small></p>
+            </div>
+
+
+            {% endfor %}
+      </div>
+      {% endif %}
+      {% endif %}
+
+       {% if playlist_list %}
+        <h5 style="font-family:comic;margin-top:10px;">Recent Playlists</h5><hr>
+      <div  id = "show_playlist" class="row justify-content-md-center">
         {% for playlist in playlist_list %}
 
             <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;position:relative;">
@@ -41,7 +66,44 @@ Home
 
 
             {% endfor %}
+      </div>
+      {% endif %}
+
+       <h5 style="font-family:comic;margin-top:10px;">All Video</h5><hr>
+    <div  id = "video_all" class="row justify-content-md-center">
+      {% for video in videos_all %}
+
+            <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;">
+                 {% load static %}
+              <a href='/video/{{ video.id }}/0'>
+              <img src="{{video.thumbtail}}" class="card-img-top" alt="No Video Present">
+                  </a>
+                  <p class = "mx-3 my-3"><strong class="font-italic">{{ video.title }}</strong><br><small class="text-muted" >Uploaded by {{ video.user }} on {{ video.upload_date }}</small></p>
+            </div>
+
+
+            {% endfor %}
         </div>
+
+      {% if playlist_list_all %}
+        <h5 style="font-family:comic;margin-top:10px;">All Playlists</h5><hr>
+      <div  id = "playlist_all" class="row justify-content-md-center">
+        {% for playlist in playlist_list_all %}
+
+            <div class="shadow-lg card mx-2 my-3 " style="width: 28rem;position:relative;">
+                 {% load static %}
+              <a href='/video/0/{{ playlist.id }}'>
+                   <img src="{{playlist.thumbtail}}" class="card-img-top" alt="No Video Present">
+            <img src='{% static "playlist.png" %}'  style = "position: absolute;right:0px;right:0px;top: 0px;width:200px;opacity:0.4;filter: invert(1);" class="card-img-top" alt="No Video Present">
+
+              </a>
+                  <p class = "mx-3 my-3"><strong class="font-italic">{{ playlist.title }}</strong><br><small class="text-muted" >Uploaded on {{ playlist.upload_date }}</small></p>
+            </div>
+
+
+            {% endfor %}
+      </div>
+      {% endif %}
       </div>
 
 </main>

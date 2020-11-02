@@ -1,11 +1,5 @@
 
-div#video_control{
-    cursor:pointer;
-    opacity:0;
-}
-div#video_control:hover{
-   opacity:1;
-}
+
 
 span#curtimetext{
     color:white;
@@ -64,6 +58,19 @@ opacity:0.5;
 }
 
 svg#forward10:hover{
+    opacity:1;
+}
+
+
+i#mode{
+font-size:30px;
+color:white;
+margin:10px;
+cursor:pointer;
+opacity:0.5;
+}
+
+i#mode:hover{
     opacity:1;
 }
 
